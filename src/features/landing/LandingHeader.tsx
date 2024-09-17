@@ -1,11 +1,13 @@
 "use client";
 
-import { LogoSvg } from "@/components/svg/LogoSvg";
 import { SiteConfig } from "@/site-config";
+import Typewriter from "typewriter-effect";
 import { motion, useMotionValue, useScroll, useTransform } from "framer-motion";
 import { useEffect } from "react";
-import { AuthButtonClient } from "../auth/AuthButtonClient";
-import { ThemeToggle } from "../theme/ThemeToggle";
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import SocialLinks from "@/features/social/SocialLinks";
+import { Mails } from "lucide-react";
 
 function useBoundedScroll(threshold: number) {
   const { scrollY } = useScroll();
@@ -54,13 +56,13 @@ export function LandingHeader() {
   return (
     <motion.header
       style={{
-        height: useTransform(scrollYBoundedProgressDelayed, [0, 1], [80, 50]),
+        height: useTransform(scrollYBoundedProgressDelayed, [0, 1], [110, 80]),
       }}
-      className="fixed inset-x-0 z-50 flex h-20 w-screen shadow backdrop-blur-md"
+      className="fixed inset-x-0 z-50 flex h-20 w-screen bg-gradient-to-r from-white via-green-50 to-white"
     >
-      <div className="mx-auto flex w-full max-w-3xl items-center justify-between px-4 lg:px-8">
+      <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-8">
         <div className="flex items-center gap-1">
-          <LogoSvg size={24} />
           <motion.p
             style={{
               scale: useTransform(
@@ -69,10 +71,19 @@ export function LandingHeader() {
                 [1, 0.9],
               ),
             }}
-            className="flex origin-left items-center text-xl font-semibold uppercase max-sm:hidden"
+            className="custom-font-text flex origin-left items-center text-xl font-semibold uppercase max-sm:hidden"
           >
             {SiteConfig.title}
           </motion.p>
+          <span className="font-custom ml-2 hidden text-nowrap text-xl text-primary sm:block">
+            <Typewriter
+              options={{
+                loop: true,
+                autoStart: true,
+                strings: ["Médiation animale"],
+              }}
+            />
+          </span>
         </div>
         <motion.nav
           style={{
@@ -84,11 +95,16 @@ export function LandingHeader() {
           }}
           className="flex items-center gap-4 text-sm font-medium text-muted-foreground"
         >
-          <a href="#features">Features</a>
-          <a href="#pricing">Pricing</a>
-          <a href="/posts">Blog</a>
-          <AuthButtonClient />
-          <ThemeToggle />
+          <Link
+            href="#contact"
+            className={buttonVariants({
+              className: "mt-2",
+            })}
+          >
+            <Mails size={20} className="mr-2" />
+            Contact
+          </Link>
+          <SocialLinks />
         </motion.nav>
       </div>
     </motion.header>

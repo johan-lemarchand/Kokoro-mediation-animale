@@ -1,12 +1,12 @@
 export const SiteConfig = {
-  title: "Now.ts",
-  description: "A template description for Now.ts",
-  prodUrl: "https://demo.nowts.app/",
-  domain: "nowts.app",
-  appIcon: "/images/icon.png",
+  title: "Kokoro",
+  description: "Découvrez Kokoro Médiation Animale, spécialiste en médiation animale dans le Bas-Rhin. Nous offrons des services de bien-être, de développement personnel et de renforcement de la confiance en soi grâce à des interactions enrichissantes avec les animaux. Basés en Alsace dans le Bas-Rhin, nous sensibilisons au respect des animaux et développons des apprentissages pour tous, adaptés à votre environnement local.",
+  prodUrl: "https://kokoro-mediation-animale.fr/",
+  domain: "kokoro-mediation-animale.fr",
+  appIcon: "/favicon.ico",
   company: {
-    name: "NowTS Inc.",
-    address: "1234 Main St, New York, NY 10001",
+    name: "Kokoro Médiation Animale",
+    address: "26 E rue de Kaltenhouse, 67240 OBERHOFFEN-SUR-MODER",
   },
   brand: {
     primary: "#007291",
@@ -17,14 +17,14 @@ export const SiteConfig = {
      * If you don't have one, you can use `test@resend.com`
      * If you use Resend domain, you can ONLY send email to your account email.
      */
-    from: "NowTS <contact@nowts.app>",
-    contact: "contact@nowts.app",
+    from: "Kokoro médiation animale <kokoro.mediation.animale@gmail.com>",
+    contact: "kokoro.mediation.animale@gmail.com",
   },
   maker: {
     image: "https://melvynx.com/images/me/twitter-en.jpg",
     website: "https://melvynx.com",
     twitter: "https://twitter.com/melvyn_me",
-    name: "Melvynx",
+    name: "Louise Burg",
   },
   features: {
     /**

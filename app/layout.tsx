@@ -26,9 +26,9 @@ export default function RootLayout({
 }: LayoutParams & { modal?: ReactNode }) {
   return (
     <>
-      <html lang="en" className="h-full" suppressHydrationWarning>
+      <html lang="fr" suppressHydrationWarning>
         <head>
-          <PlausibleProvider domain={SiteConfig.domain} />
+          <PlausibleProvider domain={SiteConfig.domain} /><title>médiation par l'animal</title>
         </head>
         <body
           suppressHydrationWarning
@@ -46,8 +46,6 @@ export default function RootLayout({
             />
             {children}
             {modal}
-            <TailwindIndicator />
-            <FloatingLegalFooter />
           </Providers>
         </body>
       </html>

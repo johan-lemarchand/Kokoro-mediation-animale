@@ -22,9 +22,7 @@ export const hashStringWithSalt = (string: string, salt: string) => {
 
   hash.update(saltedString);
 
-  const hashedString = hash.digest("hex");
-
-  return hashedString;
+  return hash.digest("hex");
 };
 
 export const getCredentialsProvider = () => {
