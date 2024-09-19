@@ -2,7 +2,7 @@ import { TeamGridSection } from "@/features/landing/TeamSection";
 import { Hero } from "@/features/landing/Hero";
 import { LandingHeader } from "@/features/landing/LandingHeader";
 import { DiplomaSection } from "@/features/landing/Diploma";
-import { CTASectionCardContact } from "@/features/landing/cta/CTACardContactSection";
+import { ContactMessageSection } from "@/features/contact/message/contactMessageSection";
 import { Footer } from "@/features/layout/Footer";
 import { ProcessSection } from "@/features/landing/ProcessSection";
 import { ServiceSection } from "@/features/landing/ServiceSection";
@@ -27,7 +27,7 @@ export default function HomePage() {
 
       <ContactSection />
 
-      <CTASectionCardContact />
+      <ContactMessageSection />
 
       <Footer />
     </div>

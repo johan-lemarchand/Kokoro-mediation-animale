@@ -14,9 +14,8 @@ type ResendParamsTypeWithConditionalFrom = [
  * sendEmail will send an email using resend.
  * To avoid repeating the same "from" email, you can leave it empty and it will use the default one.
  * Also, in development, it will add "[DEV]" to the subject.
- * @param params[0] : payload
- * @param params[1] : options
  * @returns a promise of the email sent
+ * @param params
  */
 export const sendEmail = async (
   ...params: ResendParamsTypeWithConditionalFrom

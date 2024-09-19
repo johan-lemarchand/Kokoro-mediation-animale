@@ -1,14 +1,14 @@
 "use client";
 
 import { Typography } from "@/components/ui/typography";
-import { FaMapMarkerAlt, FaPhone, FaEnvelope } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import { ReactNode } from "react";
 
 interface ContactCardProps {
   icon: ReactNode;
   title: string;
   content: string;
-  type: 'address' | 'phone' | 'email';
+  type: "address" | "phone" | "email";
 }
 
 export function ContactSection() {
@@ -69,30 +69,45 @@ export function ContactSection() {
 function ContactCard({ icon, title, content, type }: ContactCardProps) {
   const handleClick = () => {
     switch (type) {
-      case 'address':
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-          window.open(`https://maps.google.com/?q=${encodeURIComponent(content)}`, '_blank');
+      case "address":
+        if (
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent,
+          )
+        ) {
+          window.open(
+            `https://maps.google.com/?q=${encodeURIComponent(content)}`,
+            "_blank",
+          );
         } else {
-          window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(content)}`, '_blank');
+          window.open(
+            `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(content)}`,
+            "_blank",
+          );
         }
         break;
-      case 'phone':
-        window.location.href = `tel:${content.replace(/\s/g, '')}`;
+      case "phone":
+        window.location.href = `tel:${content.replace(/\s/g, "")}`;
         break;
-      case 'email':
+      case "email":
         window.location.href = `mailto:${content}`;
         break;
     }
   };
 
   return (
-    <div 
-      className="flex flex-col items-center rounded-lg bg-white p-4 text-center shadow-md cursor-pointer hover:shadow-lg transition-shadow duration-300 w-full"
+    <div
+      className="flex w-full cursor-pointer flex-col items-center rounded-lg bg-white p-4 text-center shadow-md transition-shadow duration-300 hover:shadow-lg"
       onClick={handleClick}
     >
       <div className="mb-2 text-2xl text-primary">{icon}</div>
       <h3 className="mb-1 font-semibold">{title}</h3>
-      <p className="text-sm break-words w-full" style={{ wordBreak: 'break-all' }}>{content}</p>
+      <p
+        className="w-full break-words text-sm"
+        style={{ wordBreak: "break-all" }}
+      >
+        {content}
+      </p>
     </div>
   );
 }

@@ -5,8 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { IconProps } from "@/components/utils/iconProps";
 
 // ===============================================================
@@ -29,26 +29,39 @@ export default function ServiceCard({
   learnMore,
 }: ServiceCard1Props) {
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-      <div className="p-6 flex flex-col items-center">
-        <div className={`w-20 h-20 mb-4 flex items-center justify-center rounded-full bg-${linkType}-100`}>
-          <Icon className={`w-12 h-12 text-${linkType}-500`} />
+    <div className="overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-lg">
+      <div className="flex flex-col items-center p-6">
+        <div
+          className={`bg- mb-4 flex size-20 items-center justify-center rounded-full${linkType}-100`}
+        >
+          <Icon className={`text- size-12${linkType}-500`} />
         </div>
-        <h4 className="text-xl font-semibold mb-2 text-center">{title}</h4>
-        <p className="text-sm text-gray-600 text-center mb-2">{description.split('<br/>')[0]}</p>
-        <p className="text-sm text-gray-600 text-center mb-4">{description.split('<br/>')[1]}</p>
+        <h4 className="mb-2 text-center text-xl font-semibold">{title}</h4>
+        <p className="mb-2 text-center text-sm text-gray-600">
+          {description.split("<br/>")[0]}
+        </p>
+        <p className="mb-4 text-center text-sm text-gray-600">
+          {description.split("<br/>")[1]}
+        </p>
         <Dialog>
           <DialogTrigger asChild>
-            <button className={`text-${linkType}-500 hover:text-${linkType}-600 font-medium text-sm`}>
+            <button
+              className={`text-${linkType}-500 hover:text-${linkType}-600 text-sm font-medium`}
+            >
               En savoir plus
             </button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle className="text-lg font-semibold">{title}</DialogTitle>
+              <DialogTitle className="text-lg font-semibold">
+                {title}
+              </DialogTitle>
               <ScrollArea className="h-[400px] w-full rounded-md border p-4">
                 <DialogDescription asChild>
-                  <div className="text-sm text-gray-500" dangerouslySetInnerHTML={{ __html: learnMore }} />
+                  <div
+                    className="text-sm text-gray-500"
+                    dangerouslySetInnerHTML={{ __html: learnMore }}
+                  />
                 </DialogDescription>
               </ScrollArea>
             </DialogHeader>

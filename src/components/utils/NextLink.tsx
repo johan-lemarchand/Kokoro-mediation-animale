@@ -1,5 +1,5 @@
-import Link, { LinkProps } from 'next/link';
-import { ReactNode } from 'react';
+import Link, { LinkProps } from "next/link";
+import { ReactNode } from "react";
 
 // ==============================================================
 interface NextLinkProps extends LinkProps {

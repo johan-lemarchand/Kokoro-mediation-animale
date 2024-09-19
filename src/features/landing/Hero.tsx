@@ -12,7 +12,7 @@ export const Hero = () => {
             alt="Logo Kokoro Médiation Animale"
             width={200}
             height={200}
-            style={{ width: 'auto', height: 'auto' }}
+            style={{ width: "auto", height: "auto" }}
             priority
           />
           <Typography variant="h2" className="max-w-3xl !leading-tight">
@@ -30,15 +30,14 @@ export const Hero = () => {
         </div>
         <div className="flex flex-1 flex-col">
           <Typography variant="p">
-            La médiation par l'animal s'articule autour d'une relation
-            triadique entre le bénéficiaire de la séance, l'animal et le
-            binôme Intervenant en Médiation Animale et Référent.
+            La médiation par l'animal s'articule autour d'une relation triadique
+            entre le bénéficiaire de la séance, l'animal et le binôme
+            Intervenant en Médiation Animale et Référent.
           </Typography>
           <div className="mb-9 mt-10 flex w-full items-center justify-center">
             <ul className="space-y-4 pl-5">
               <li>
-                <span className="font-bold">- L'animal médiateur :</span>{' '}
-                <br />
+                <span className="font-bold">- L'animal médiateur :</span> <br />
                 Animal formé spécifiquement à la médiation par l'animal
               </li>
               <li>

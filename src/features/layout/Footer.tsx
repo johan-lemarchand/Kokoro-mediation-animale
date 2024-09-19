@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import Link from "next/link";
 
 export const Footer = () => {
   return (
@@ -129,8 +130,8 @@ export const Footer = () => {
 
                         <footer>
                           <p>
-                            &copy; {new Date().getFullYear()} Kokoro Médiation Animale. Tous droits
-                            réservés.
+                            &copy; {new Date().getFullYear()} Kokoro Médiation
+                            Animale. Tous droits réservés.
                           </p>
                         </footer>
                       </Typography>
@@ -138,6 +139,14 @@ export const Footer = () => {
                   </div>
                 </DialogContent>
               </Dialog>
+              <Link href="/auth/signin">
+                <Typography
+                  variant="muted"
+                  className="text-left hover:underline"
+                >
+                  Connexion
+                </Typography>
+              </Link>
             </div>
             <div className="ml-2 flex flex-col gap-4">
               <Typography variant="large">Mes réseaux</Typography>

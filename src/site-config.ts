@@ -1,6 +1,7 @@
 export const SiteConfig = {
   title: "Kokoro",
-  description: "Découvrez Kokoro Médiation Animale, spécialiste en médiation animale dans le Bas-Rhin. Nous offrons des services de bien-être, de développement personnel et de renforcement de la confiance en soi grâce à des interactions enrichissantes avec les animaux. Basés en Alsace dans le Bas-Rhin, nous sensibilisons au respect des animaux et développons des apprentissages pour tous, adaptés à votre environnement local.",
+  description:
+    "Découvrez Kokoro Médiation Animale, spécialiste en médiation animale dans le Bas-Rhin. Nous offrons des services de bien-être, de développement personnel et de renforcement de la confiance en soi grâce à des interactions enrichissantes avec les animaux. Basés en Alsace dans le Bas-Rhin, nous sensibilisons au respect des animaux et développons des apprentissages pour tous, adaptés à votre environnement local.",
   prodUrl: "https://kokoro-mediation-animale.fr/",
   domain: "kokoro-mediation-animale.fr",
   appIcon: "/favicon.ico",
@@ -17,7 +18,7 @@ export const SiteConfig = {
      * If you don't have one, you can use `test@resend.com`
      * If you use Resend domain, you can ONLY send email to your account email.
      */
-    from: "Kokoro médiation animale <kokoro.mediation.animale@gmail.com>",
+    from: "Kokoro médiation animale <delivered@resend.dev>",
     contact: "kokoro.mediation.animale@gmail.com",
   },
   maker: {

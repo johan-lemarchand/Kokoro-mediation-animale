@@ -1,13 +1,9 @@
 import { PrismaClient } from "@prisma/client";
-import { onOrganizationUpdate } from "./prisma/prisma.org.extends";
 import { onUserUpdate } from "./prisma/prisma.user.extends";
 
 const prismaClientSingleton = () => {
   return new PrismaClient().$extends({
     query: {
-      organization: {
-        update: onOrganizationUpdate,
-      },
       user: {
         update: onUserUpdate,
       },

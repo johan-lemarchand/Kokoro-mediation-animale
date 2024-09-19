@@ -14,7 +14,8 @@
     "vercel-build": "prisma generate && prisma migrate deploy && next build",
     "postinstall": "prisma generate",
     "clean": "next lint --fix && tsc --noEmit && prettier --write .",
-    "knip": "knip"
+    "knip": "knip",
+    "migrate": "prisma migrate deploy"
   },
   "dependencies": {
     "@ai-sdk/openai": "^0.0.54",
@@ -41,7 +42,9 @@
     "@radix-ui/react-tooltip": "^1.1.2",
     "@react-email/components": "0.0.24",
     "@react-email/html": "0.0.10",
+    "@react-email/render": "1.0.1",
     "@react-email/tailwind": "0.0.19",
+    "@supabase/supabase-js": "^2.45.4",
     "@t3-oss/env-nextjs": "^0.11.1",
     "@tanstack/react-query": "^5.53.2",
     "ai": "^3.3.22",

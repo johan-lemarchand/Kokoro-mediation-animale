@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import type { ComponentPropsWithoutRef } from "react";
-import Image from 'next/image';
+import Image from "next/image";
 
 type SectionLayoutProps = ComponentPropsWithoutRef<"div"> & {
   size?: "sm" | "base" | "lg";
@@ -29,7 +29,7 @@ export const SectionLayout = ({
           "bg-foreground text-background": variant === "invert",
           "text-foreground": variant === "image",
         },
-        containerClassName
+        containerClassName,
       )}
       {...props}
     >
@@ -40,7 +40,7 @@ export const SectionLayout = ({
             alt="Background"
             fill
             sizes="100vw"
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: "cover" }}
             quality={100}
           />
           {variant === "image" && (
@@ -56,7 +56,7 @@ export const SectionLayout = ({
             "max-w-5xl": size === "base",
             "max-w-6xl": size === "lg",
           },
-          className
+          className,
         )}
       >
         {children}

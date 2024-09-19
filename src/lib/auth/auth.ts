@@ -5,10 +5,6 @@ import type { Session } from "next-auth";
 import NextAuth from "next-auth";
 import { env } from "../env";
 import { prisma } from "../prisma";
-import {
-  setupDefaultOrganizationsOrInviteUser,
-  setupResendCustomer,
-} from "./auth-config-setup";
 import { getNextAuthConfigProviders } from "./getNextAuthConfigProviders";
 
 export const { handlers, auth: baseAuth } = NextAuth((req) => ({
@@ -50,19 +46,6 @@ export const { handlers, auth: baseAuth } = NextAuth((req) => ({
       if (!user.email) {
         return;
       }
-
-      const resendContactId = await setupResendCustomer(user);
-
-      await setupDefaultOrganizationsOrInviteUser(user);
-
-      await prisma.user.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          resendContactId,
-        },
-      });
     },
   },
   // 🔑 Add this line and the import to add credentials provider

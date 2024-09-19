@@ -1,7 +1,6 @@
 "use client";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Divider } from "@/components/ui/divider";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Typography } from "@/components/ui/typography";
 import { useQuery } from "@tanstack/react-query";
@@ -22,7 +21,6 @@ export const SignInProviders = () => {
       <div className="flex flex-col gap-4">
         <Skeleton className="h-3 w-12" />
         <Skeleton className="h-9" />
-        <Divider>or</Divider>
         <Skeleton className="h-11" />
       </div>
     );
@@ -53,14 +51,12 @@ export const SignInProviders = () => {
         <div className="flex flex-col gap-2 lg:gap-4">
           <Typography variant="small">Magic link ✨</Typography>
           <MagicLinkForm />
-          <Divider>or</Divider>
         </div>
       ) : null}
 
       {providers.credentials ? (
         <>
           <SignInCredentialsAndMagicLinkForm />
-          <Divider>or</Divider>
         </>
       ) : null}
 
