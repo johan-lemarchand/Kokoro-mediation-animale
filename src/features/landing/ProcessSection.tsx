@@ -50,8 +50,8 @@ export function ProcessSection() {
             l'attention, l'apaisement.
           </Typography>
           {objectifList.map((item) => (
-            <div 
-              key={item.icon} 
+            <div
+              key={item.icon}
               className="mb-6 mt-8 flex items-start rounded-lg bg-gray-50 p-4"
             >
               <div className="mr-4 shrink-0">
@@ -81,8 +81,8 @@ export function ProcessSection() {
           </Typography>
           <Typography variant="p" className="text-lg">
             Le choix de l'animal est effectué en fonction des objectifs
-            recherchés pour la séance. Ce choix s'effectue avec le
-            bénéficiaire et le référent.
+            recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire
+            et le référent.
           </Typography>
         </div>
       </div>

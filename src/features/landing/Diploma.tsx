@@ -14,14 +14,14 @@ export const DiplomaSection = () => {
     >
       <div className="relative w-full max-w-4xl">
         <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]"></div>
-        <Typography 
-          variant="h2" 
+        <Typography
+          variant="h2"
           className="relative z-10 my-6 text-center text-4xl font-bold text-white drop-shadow-sm"
         >
           Qui suis-je ?
         </Typography>
-        <Typography 
-          variant="p" 
+        <Typography
+          variant="p"
           className="relative z-10 m-8 text-center text-lg text-white drop-shadow-sm"
         >
           Louise, éducatrice de jeunes enfants et médiatrice animale passionnée
@@ -34,9 +34,14 @@ export const DiplomaSection = () => {
           une évidence!
         </Typography>
       </div>
-      
+
       <div className="w-full max-w-4xl">
-        <Typography variant="h2" className="mb-8 text-center text-3xl font-bold">Mes diplômes</Typography>
+        <Typography
+          variant="h2"
+          className="mb-8 text-center text-3xl font-bold"
+        >
+          Mes diplômes
+        </Typography>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {diplomaList.map((item) => (
             <div
@@ -61,19 +66,19 @@ export const DiplomaSection = () => {
 
 const diplomaList = [
   {
-    no: '1',
-    text: 'Educatrice de Jeunes Enfants',
+    no: "1",
+    text: "Educatrice de Jeunes Enfants",
   },
   {
-    no: '2',
+    no: "2",
     text: "ACACED (Attestation de Connaissances pour les Animaux de Compagnie d'Espèces Domestiques)",
   },
   {
-    no: '3',
-    text: 'Formation Chargé de Projet en Médiation par l\'Animal – Institut de formation AGATEA',
+    no: "3",
+    text: "Formation Chargé de Projet en Médiation par l'Animal – Institut de formation AGATEA",
   },
   {
-    no: '4',
+    no: "4",
     text: "PECCRAM (Programme d'Education à la Connaissance du Chien et au Risque d'Accident par Morsure)",
   },
 ];

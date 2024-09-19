@@ -25,7 +25,7 @@ export default async function AuthSignInPage(props: PageParams) {
         <Card className="w-full max-w-md lg:max-w-lg lg:p-6">
           <CardHeader className="flex flex-col items-center justify-center gap-2">
             <LogoSvg />
-            <CardTitle>Sign in to your account</CardTitle>
+            <CardTitle>Connectez-vous à votre compte</CardTitle>
           </CardHeader>
           <CardContent className="mt-8">
             <SignInProviders />

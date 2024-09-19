@@ -1,34 +1,29 @@
 "use client";
 
 import { SectionLayout } from "./SectionLayout";
-import Icon1 from '@/components/svg/Icon1Kokoro';
-import Icon2 from '@/components/svg/Icon2Kokoro';
-import Icon3 from '@/components/svg/Icon3Kokoro';
-import Icon4 from '@/components/svg/Icon4Kokoro';
+import Icon1 from "@/components/svg/Icon1Kokoro";
+import Icon2 from "@/components/svg/Icon2Kokoro";
+import Icon3 from "@/components/svg/Icon3Kokoro";
+import Icon4 from "@/components/svg/Icon4Kokoro";
 import ServiceCard from "@/features/commmon/ServiceCard";
 import { Typography } from "@/components/ui/typography";
 
 export function ServiceSection() {
   return (
-    <SectionLayout className={'py-10 lg:py-10'}>
+    <SectionLayout className={"py-10 lg:py-10"}>
       <div className="container mx-auto">
         <div className="mb-12 text-center">
-          <Typography
-            variant="h2"
-            className="mb-4 text-3xl font-bold"
-          >
+          <Typography variant="h2" className="mb-4 text-3xl font-bold">
             Mes prestations
           </Typography>
-          <Typography
-            variant="p"
-            className="text-lg"
-          >
-            Le service que j'offre est spécialement conçu pour répondre à vos besoins.
+          <Typography variant="p" className="text-lg">
+            Le service que j'offre est spécialement conçu pour répondre à vos
+            besoins.
           </Typography>
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {services.map(item => (
+          {services.map((item) => (
             <ServiceCard
               key={item.id}
               Icon={item.icon}
@@ -47,11 +42,11 @@ export function ServiceSection() {
 const services = [
   {
     id: 1,
-    link: '#',
+    link: "#",
     icon: Icon1,
-    title: 'Séance Découverte',
-    linkText: 'Learn More',
-    linkType: 'yellow',
+    title: "Séance Découverte",
+    linkText: "Learn More",
+    linkType: "yellow",
     learnMore: `1 à 6 participants - 45min/1h<br/>
               Vous êtes curieux de découvrir ce qu'est la médiation par l'animal et les merveilleux bienfaits qu'elle peut offrir ? 
               Je vous invite à participer à une séance découverte, où vous pourrez plonger dans cet univers apaisant et bienveillant,
@@ -64,11 +59,11 @@ const services = [
   },
   {
     id: 2,
-    link: '#',
+    link: "#",
     icon: Icon2,
-    title: 'Séance Programme',
-    linkText: 'Learn More',
-    linkType: 'red',
+    title: "Séance Programme",
+    linkText: "Learn More",
+    linkType: "red",
     learnMore: `1 à 4 participants - 45min/1h<br/>
               Vous souhaitez aller au-delà d'une simple découverte et travailler sur des objectifs précis grâce à la médiation par l’animal ? 
               Je vous propose un programme de séances personnalisées, conçu pour répondre à vos besoins spécifiques et définis ensemble.<br/>
@@ -90,11 +85,11 @@ const services = [
   },
   {
     id: 3,
-    link: '#',
+    link: "#",
     icon: Icon3,
-    linkType: 'green',
-    title: 'Séance Animation',
-    linkText: 'Learn More',
+    linkType: "green",
+    title: "Séance Animation",
+    linkText: "Learn More",
     learnMore: `1 à 6 participants – 45min/1h<br/>
       Ces séances sont adaptées à tous les âges et peuvent être personnalisées en fonction des besoins et des objectifs du groupe.<br/>
       Que ce soit pour des ateliers éducatifs ou des journées spéciales, ces animations sont l'occasion de découvrir, apprendre et passer un moment apaisant auprès des animaux.<br/>
@@ -104,11 +99,11 @@ const services = [
   },
   {
     id: 4,
-    link: '#',
+    link: "#",
     icon: Icon4,
-    linkType: 'blue',
-    title: 'Séance Parents-Enfants',
-    linkText: 'Learn More',
+    linkType: "blue",
+    title: "Séance Parents-Enfants",
+    linkText: "Learn More",
     learnMore: `1 à 4 duo parents-enfants - 45 min/1h<br/>
       À travers la médiation animale et mon expérience d’éducatrice de jeunes enfants, je vous propose une approche unique pour renforcer la relation avec votre enfant.<br/>
       Grâce à la présence bienveillante des animaux, je crée un espace de connexion où parents et enfants peuvent s'exprimer, collaborer et tisser des liens encore plus forts.<br/>
@@ -118,12 +113,11 @@ const services = [
   },
   {
     id: 5,
-    link: '#',
+    link: "#",
     icon: Icon1,
-    linkType: 'yellow',
-    title:
-      'Séance Interventions PECCRAM',
-    linkText: 'Learn More',
+    linkType: "yellow",
+    title: "Séance Interventions PECCRAM",
+    linkText: "Learn More",
     learnMore: `Ateliers destinés aux enfants de 4 à 12 ans. <br/>
       Ces ateliers ont pour objectif d’enseigner aux enfants le langage canin et les comportements à adopter avec les chiens. Elles leur apprennent à interagir de manière sécurisée et respectueuse avec les animaux, réduisant ainsi les accidents potentiels. Mais surtout, elles permettent d’harmoniser la relation entre l’Homme et le chien. Ces séances peuvent être effectuées à domicile ou en établissement.`,
     description: `Ateliers destinés aux enfants de 4 à 12 ans.`,

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
-import Image from 'next/image';
-import { StaticImageData } from 'next/image';
+import Image from "next/image";
+import { StaticImageData } from "next/image";
 import React from "react";
 
 export const BentoGrid = ({
@@ -37,7 +37,7 @@ export const BentoGridItem = ({
     <div
       className={cn(
         "row-span-1 rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-200",
-        className
+        className,
       )}
     >
       {image && (
@@ -47,7 +47,7 @@ export const BentoGridItem = ({
             alt={`Photo de ${title}`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            style={{ objectFit: 'cover' }}
+            style={{ objectFit: "cover" }}
           />
         </div>
       )}

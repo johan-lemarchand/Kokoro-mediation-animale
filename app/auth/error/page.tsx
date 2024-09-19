@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ContactSupportDialog } from "@/features/contact/support/ContactSupportDialog";
 import { HeaderBase } from "@/features/layout/HeaderBase";
 import {
   Layout,
@@ -38,7 +37,6 @@ export default async function AuthErrorPage(props: PageParams) {
               <Link href="/" className={buttonVariants({ size: "sm" })}>
                 Home
               </Link>
-              <ContactSupportDialog />
             </CardFooter>
           </Card>
         </LayoutContent>

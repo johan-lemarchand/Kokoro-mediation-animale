@@ -1,4 +1,3 @@
-import { SiteConfig } from "@/site-config";
 import { Prisma } from "@prisma/client";
 import {
   DefaultArgs,
@@ -16,10 +15,7 @@ export const onUserUpdate: DynamicQueryExtensionCb<
   "User",
   "update"
 > = async (...params) => {
-  if (SiteConfig.features.enableSingleMemberOrg) {
-    syncWithOrganizations(...params);
-  }
-  syncWithResendContact(...params);
+  await syncWithResendContact(...params);
 
   const [{ args, query }] = params;
   return query(args);
@@ -80,68 +76,4 @@ const syncWithResendContact: DynamicQueryExtensionCb<
       resendContactId: newResendContactId,
     },
   });
-};
-
-/**
- * If "one-organization" model is enable, we synchronies every user settings with the organization.
- */
-const syncWithOrganizations: DynamicQueryExtensionCb<
-  Prisma.TypeMap<InternalArgs & DefaultArgs, Prisma.PrismaClientOptions>,
-  "model",
-  "User",
-  "update"
-> = async ({ args }) => {
-  const userId = args.where.id;
-
-  if (!userId) {
-    return;
-  }
-
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    select: {
-      id: true,
-      organizations: {
-        where: {
-          roles: {
-            hasSome: ["OWNER"],
-          },
-        },
-        select: {
-          organization: {
-            select: {
-              id: true,
-            },
-          },
-        },
-      },
-    },
-  });
-
-  const firstOrg = user?.organizations[0].organization;
-
-  if (!firstOrg?.id) {
-    return;
-  }
-
-  const emailUpdate = args.data.email ? String(args.data.email) : undefined;
-  const nameUpdate = args.data.name
-    ? `${String(args.data.name)}'s app`
-    : undefined;
-  const imageUpdate = args.data.image ? String(args.data.image) : undefined;
-
-  await prisma.organization.update({
-    where: {
-      id: firstOrg.id,
-    },
-    data: {
-      email: emailUpdate,
-      name: nameUpdate,
-      image: imageUpdate,
-    },
-  });
-
-  return;
 };

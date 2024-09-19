@@ -2,7 +2,6 @@
 
 import { Toaster } from "@/components/ui/sonner";
 import { AlertDialogRenderer } from "@/features/alert-dialog/AlertDialogRenderer";
-import { GlobalDialogLazy } from "@/features/global-dialog/GlobalDialogLazy";
 import { SearchParamsMessageToastSuspended } from "@/features/searchparams-message/SearchParamsMessageToast";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
@@ -24,17 +23,16 @@ export const Providers = ({ children }: PropsWithChildren) => {
         nonce: undefined,
       }}
     >
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <SessionProvider>
-        <QueryClientProvider client={queryClient}>
-          <Toaster />
-          <AlertDialogRenderer />
-          <GlobalDialogLazy />
-          <SearchParamsMessageToastSuspended />
-          {children}
-        </QueryClientProvider>
-      </SessionProvider>
-    </ThemeProvider>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <SessionProvider>
+          <QueryClientProvider client={queryClient}>
+            <Toaster />
+            <AlertDialogRenderer />
+            <SearchParamsMessageToastSuspended />
+            {children}
+          </QueryClientProvider>
+        </SessionProvider>
+      </ThemeProvider>
     </GoogleReCaptchaProvider>
   );
 };

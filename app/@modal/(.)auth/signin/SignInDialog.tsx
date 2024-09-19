@@ -27,9 +27,9 @@ export function SignInDialog() {
       <DialogContent className="bg-card">
         <DialogHeader className="flex flex-col items-center justify-center gap-2">
           <LogoSvg />
-          <DialogTitle>Sign in to your account</DialogTitle>
+          <DialogTitle>Connectez-vous à votre compte</DialogTitle>
           <DialogDescription className="sr-only">
-            Please sign in to your account to continue.
+            Connectez-vous à votre compte pour continuer.
           </DialogDescription>
         </DialogHeader>
         <SignInProviders />
