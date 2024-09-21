@@ -12,6 +12,7 @@ import { ContactFormSchema } from "./contact-message.schema";
 import { submitContactForm } from "./contact-message.action";
 import { z } from "zod";
 import { Toaster } from "@/components/ui/toaster";
+import { LoadingButton } from "@/features/form/SubmitButton";
 
 export function ContactMessageSection() {
   const plausible = usePlausible();
@@ -23,6 +24,7 @@ export function ContactMessageSection() {
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
@@ -48,6 +50,7 @@ export function ContactMessageSection() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsSubmitting(true);
     const formData = new FormData(event.currentTarget);
     const values = Object.fromEntries(formData.entries());
     if (!recaptchaToken) {
@@ -96,6 +99,8 @@ export function ContactMessageSection() {
           duration: 5000,
         });
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -213,7 +218,8 @@ export function ContactMessageSection() {
               onVerify={handleRecaptchaVerify}
               ref={recaptchaRef}
             />
-            <button
+            <LoadingButton
+              loading={isSubmitting}
               type="submit"
               className={`${buttonVariants({ size: "lg" })} w-full justify-center`}
               onClick={() => {
@@ -223,7 +229,7 @@ export function ContactMessageSection() {
               }}
             >
               Envoyer le message
-            </button>
+            </LoadingButton>
           </div>
         </form>
       </Card>

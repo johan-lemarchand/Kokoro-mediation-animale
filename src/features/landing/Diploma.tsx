@@ -3,6 +3,7 @@
 import { Typography } from "@/components/ui/typography";
 import { SectionLayout } from "./SectionLayout";
 import { PiCertificateBold } from "react-icons/pi";
+import { EditableText } from "@/features/editable/EditableText";
 
 export const DiplomaSection = () => {
   return (
@@ -18,21 +19,21 @@ export const DiplomaSection = () => {
           variant="h2"
           className="relative z-10 my-6 text-center text-4xl font-bold text-white drop-shadow-sm"
         >
-          Qui suis-je ?
+          <EditableText
+            initialText="Qui suis-je ?"
+            contentId="diploma-title"
+            variant="h2"
+          />
         </Typography>
-        <Typography
-          variant="p"
-          className="relative z-10 m-8 text-center text-lg text-white drop-shadow-sm"
-        >
-          Louise, éducatrice de jeunes enfants et médiatrice animale passionnée
-          ! 🌟 Depuis toujours, les animaux occupent une place spéciale dans ma
-          vie, ayant grandi entourée de leur bienveillance. C'est cette
-          connexion unique entre l'homme et l'animal, et les incroyables
-          bienfaits qu'elle apporte, qui m'ont inspiré à exercer en tant
-          qu'intervenante en médiation par l'animal. Après plusieurs années
-          d'expérience dans la relation d'aide, inclure l'animal a été pour moi
-          une évidence!
-        </Typography>
+        <div className="relative z-10 m-8 text-center text-lg text-white drop-shadow-sm">
+          <EditableText
+            initialText="Louise, éducatrice de jeunes enfants et médiatrice animale passionnée ! 🌟 Depuis toujours, les animaux occupent une place spéciale dans ma vie, ayant grandi entourée de leur bienveillance. C'est cette connexion unique entre l'homme et l'animal, et les incroyables bienfaits qu'elle apporte, qui m'ont inspiré à exercer en tant qu'intervenante en médiation par l'animal. Après plusieurs années d'expérience dans la relation d'aide, inclure l'animal a été pour moi une évidence!"
+            contentId="diploma-description"
+            variant="p"
+            renderHTML={true}
+            className="relative z-10 m-8 text-center text-lg text-white drop-shadow-sm"
+          />
+        </div>
       </div>
 
       <div className="w-full max-w-4xl">
@@ -40,7 +41,11 @@ export const DiplomaSection = () => {
           variant="h2"
           className="mb-8 text-center text-3xl font-bold"
         >
-          Mes diplômes
+          <EditableText
+            initialText="Mes diplômes"
+            contentId="diploma-subtitle"
+            variant="h2"
+          />
         </Typography>
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           {diplomaList.map((item) => (
@@ -54,7 +59,11 @@ export const DiplomaSection = () => {
                 </span>
               </div>
               <div className="grow">
-                <p className="text-sm text-gray-700">{item.text}</p>
+                <EditableText
+                  initialText={item.text}
+                  contentId={`diploma-item-${item.no}`}
+                  variant="p"
+                />
               </div>
             </div>
           ))}

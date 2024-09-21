@@ -8,6 +8,7 @@ import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import SocialLinks from "@/features/social/SocialLinks";
 import { Mails } from "lucide-react";
+import { useSession } from "next-auth/react";
 
 function useBoundedScroll(threshold: number) {
   const { scrollY } = useScroll();
@@ -52,6 +53,7 @@ export function LandingHeader() {
     [0, 0.75, 1],
     [0, 0, 1],
   );
+  const { data: session } = useSession();
 
   return (
     <motion.header
@@ -95,6 +97,9 @@ export function LandingHeader() {
           }}
           className="flex items-center gap-4 text-sm font-medium text-muted-foreground"
         >
+          {session?.user?.name && (
+            <span className="mr-4">Bonjour {session.user.name}</span>
+          )}
           <Link
             href="#contact"
             className={buttonVariants({

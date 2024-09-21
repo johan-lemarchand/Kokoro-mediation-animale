@@ -1,63 +1,99 @@
-import { Typography } from "@/components/ui/typography";
+"use client";
+
+import { EditableText } from "@/features/editable/EditableText";
+import { EditableImage } from "@/features/editable/EditableImage";
 import AccordionList from "@/features/commmon/AccordionList";
-import Image from "next/image";
 
 export const Hero = () => {
   return (
     <main className="relative m-auto my-12 mt-32 flex w-full max-w-7xl flex-col gap-8 px-8">
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="flex flex-1 flex-col items-center gap-4 text-center lg:gap-6 xl:gap-8">
-          <Image
+          <EditableImage
             src="/images/logo-compressé.webp"
             alt="Logo Kokoro Médiation Animale"
             width={200}
-            height={200}
-            style={{ width: "auto", height: "auto" }}
-            priority
+            height={250}
+            contentId="hero-logo"
           />
-          <Typography variant="h2" className="max-w-3xl !leading-tight">
-            Qu'est-ce que la médiation par l'animal ?
-          </Typography>
-          <Typography variant="p" className="max-w-3xl">
-            La médiation par l'animal est la mise en relation d'un bénéficiaire
-            et d'un animal spécifiquement éduqué dans le but de créer des
-            interactions positives visant le bien-être, le maintien ou
-            l'acquisition de compétences physiques, psychiques et/ou sociales
-            des personnes. L'animal, naturel et non jugeant favorise la création
-            d'un lien permettant d'initier le dialogue et les interactions
-            positives.
-          </Typography>
+          <EditableText
+            initialText="Qu'est-ce que la médiation par l'animal ?"
+            contentId="hero-title"
+            variant="h2"
+          />
+          <EditableText
+            initialText="La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives visant le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes. L'animal, naturel et non jugeant favorise la création d'un lien permettant d'initier le dialogue et les interactions positives."
+            contentId="hero-description"
+            className="mb-5"
+          />
         </div>
         <div className="flex flex-1 flex-col">
-          <Typography variant="p">
-            La médiation par l'animal s'articule autour d'une relation triadique
-            entre le bénéficiaire de la séance, l'animal et le binôme
-            Intervenant en Médiation Animale et Référent.
-          </Typography>
+          <EditableText
+            initialText="La médiation par l'animal s'articule autour d'une relation triadique entre le bénéficiaire de la séance, l'animal et le binôme Intervenant en Médiation Animale et Référent."
+            contentId="hero-triadique-description"
+            variant="p"
+          />
           <div className="mb-9 mt-10 flex w-full items-center justify-center">
             <ul className="space-y-4 pl-5">
               <li>
-                <span className="font-bold">- L'animal médiateur :</span> <br />
-                Animal formé spécifiquement à la médiation par l'animal
+                <EditableText
+                  initialText="- L'animal médiateur :"
+                  contentId="hero-animal-mediateur-title"
+                  variant="smallPrimary"
+                />
+                <br />
+                <EditableText
+                  initialText="Animal formé spécifiquement à la médiation par l'animal"
+                  contentId="hero-animal-mediateur-description"
+                  variant="small"
+                />
               </li>
               <li>
-                <span className="font-bold">- Le bénéficiaire :</span> <br />
-                Personne pour qui la séance est proposée
+                <EditableText
+                  initialText="- Le bénéficiaire :"
+                  contentId="hero-beneficiaire-title"
+                  variant="smallPrimary"
+                />
+                <br />
+                <EditableText
+                  initialText="Personne pour qui la séance est proposée"
+                  contentId="hero-beneficiaire-description"
+                  variant="small"
+                />
               </li>
               <li>
-                <span className="font-bold">- L'IMA :</span> <br />
-                Intervenant en médiation par l'animal formé
+                <EditableText
+                  initialText="- L'IMA :"
+                  contentId="hero-ima-title"
+                  variant="smallPrimary"
+                />
+                <br />
+                <EditableText
+                  initialText="Intervenant en médiation par l'animal formé"
+                  contentId="hero-ima-description"
+                  variant="small"
+                />
               </li>
               <li>
-                <span className="font-bold">- Le référent :</span> <br />
-                Personne qui connait le bénéficiaire et ses difficultés
+                <EditableText
+                  initialText="- Le référent :"
+                  contentId="hero-referent-title"
+                  variant="smallPrimary"
+                />
+                <br />
+                <EditableText
+                  initialText="Personne qui connait le bénéficiaire et ses difficultés"
+                  contentId="hero-referent-description"
+                  variant="small"
+                />
               </li>
             </ul>
-            <img
+            <EditableImage
               src="/images/triangle_MA.webp"
-              srcSet="/images/triangle_MA.webp"
-              alt="about"
-              className="h-auto w-1/2 object-contain"
+              alt="Triangle de médiation animale"
+              width={300}
+              height={300}
+              contentId="hero-triangle"
             />
           </div>
         </div>

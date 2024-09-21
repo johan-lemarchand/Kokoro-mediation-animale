@@ -2,17 +2,41 @@
 
 import { BentoGrid, BentoGridItem } from "@/components/ui/Bento";
 import { SectionLayout } from "./SectionLayout";
+import { EditableText } from "@/features/editable/EditableText";
+import { EditableImage } from "@/features/editable/EditableImage";
 
 export function TeamGridSection() {
   return (
     <SectionLayout>
       <BentoGrid className="mx-auto max-w-4xl md:auto-rows-[20rem]">
-        {teams.map((item, i) => (
+        {teams.map((item) => (
           <BentoGridItem
-            key={i}
-            title={item.name}
-            description={item.description}
-            image={item.image}
+            key={item.id}
+            title={
+              <EditableText
+                initialText={item.name}
+                contentId={item.nameId}
+                variant="h3"
+              />
+            }
+            description={
+              <EditableText
+                initialText={item.description}
+                contentId={item.descriptionId}
+                variant="p"
+              />
+            }
+            image={
+              <div className="relative size-full">
+                <EditableImage
+                  src={item.image}
+                  alt={item.name}
+                  contentId={item.imageId}
+                  className="size-full"
+                  objectFit="cover"
+                />
+              </div>
+            }
           />
         ))}
       </BentoGrid>
@@ -23,6 +47,9 @@ export function TeamGridSection() {
 const teams = [
   {
     id: 1,
+    nameId: "team-name-1",
+    imageId: "team-image-1",
+    descriptionId: "team-description-1",
     name: "Renji",
     image: "/images/IMG_3625.webp",
     description:
@@ -30,12 +57,18 @@ const teams = [
   },
   {
     id: 2,
+    nameId: "team-name-2",
+    imageId: "team-image-2",
+    descriptionId: "team-description-2",
     name: "Tokyo",
     image: "/images/nami.webp",
-    description: "Très curieuse et s’amuse à découvrir de nouvelles aventures.",
+    description: "Très curieuse et s'amuse à découvrir de nouvelles aventures.",
   },
   {
     id: 3,
+    nameId: "team-name-3",
+    imageId: "team-image-3",
+    descriptionId: "team-description-3",
     name: "Mochi",
     image: "/images/IMG_3442.webp",
     description:
@@ -43,6 +76,9 @@ const teams = [
   },
   {
     id: 4,
+    nameId: "team-name-4",
+    imageId: "team-image-4",
+    descriptionId: "team-description-4",
     name: "Nami",
     image: "/images/tokyo.webp",
     description:
@@ -50,8 +86,11 @@ const teams = [
   },
   {
     id: 5,
+    nameId: "team-name-5",
+    imageId: "team-image-5",
+    descriptionId: "team-description-5",
     name: "Roukia",
     image: "/images/IMG_3577.webp",
-    description: "Adore les gratouilles sous le cou, c’est son endroit favori.",
+    description: "Adore les gratouilles sous le cou, c'est son endroit favori.",
   },
 ];

@@ -6,20 +6,25 @@ import Icon2 from "@/components/svg/Icon2Kokoro";
 import Icon3 from "@/components/svg/Icon3Kokoro";
 import Icon4 from "@/components/svg/Icon4Kokoro";
 import ServiceCard from "@/features/commmon/ServiceCard";
-import { Typography } from "@/components/ui/typography";
+import { EditableText } from "@/features/editable/EditableText";
 
 export function ServiceSection() {
   return (
     <SectionLayout className={"py-10 lg:py-10"}>
       <div className="container mx-auto">
         <div className="mb-12 text-center">
-          <Typography variant="h2" className="mb-4 text-3xl font-bold">
-            Mes prestations
-          </Typography>
-          <Typography variant="p" className="text-lg">
-            Le service que j'offre est spécialement conçu pour répondre à vos
-            besoins.
-          </Typography>
+          <EditableText
+            initialText="Mes prestations"
+            contentId="service-section-title"
+            variant="h2"
+            className="mb-4 text-3xl font-bold"
+          />
+          <EditableText
+            initialText="Le service que j'offre est spécialement conçu pour répondre à vos besoins."
+            contentId="service-section-subtitle"
+            variant="p"
+            className="text-lg"
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -27,10 +32,30 @@ export function ServiceSection() {
             <ServiceCard
               key={item.id}
               Icon={item.icon}
-              title={item.title}
-              learnMore={item.learnMore}
+              title={
+                <EditableText
+                  initialText={item.title}
+                  contentId={`service-title-${item.id}`}
+                  variant="h3"
+                />
+              }
+              learnMore={
+                <EditableText
+                  initialText={item.learnMore}
+                  contentId={`service-learn-more-${item.id}`}
+                  variant="p"
+                  renderHTML={true}
+                />
+              }
               linkType={item.linkType}
-              description={item.description}
+              description={
+                <EditableText
+                  initialText={item.description}
+                  contentId={`service-description-${item.id}`}
+                  variant="p"
+                  renderHTML={true}
+                />
+              }
             />
           ))}
         </div>
@@ -46,7 +71,7 @@ const services = [
     icon: Icon1,
     title: "Séance Découverte",
     linkText: "Learn More",
-    linkType: "yellow",
+    linkType: "red",
     learnMore: `1 à 6 participants - 45min/1h<br/>
               Vous êtes curieux de découvrir ce qu'est la médiation par l'animal et les merveilleux bienfaits qu'elle peut offrir ? 
               Je vous invite à participer à une séance découverte, où vous pourrez plonger dans cet univers apaisant et bienveillant,
@@ -55,7 +80,7 @@ const services = [
               d'expérimenter, en douceur, les effets bénéfiques qu'une connexion avec les animaux peut avoir sur le bien-être émotionnel,
               social et physique.`,
     description: `1 à 6 participants - 45min/1h <br/>
-      Une séance pour la découverte de la médiation par l’animal.`,
+      Une séance pour la découverte de la médiation par l'animal.`,
   },
   {
     id: 2,
@@ -87,7 +112,7 @@ const services = [
     id: 3,
     link: "#",
     icon: Icon3,
-    linkType: "green",
+    linkType: "red",
     title: "Séance Animation",
     linkText: "Learn More",
     learnMore: `1 à 6 participants – 45min/1h<br/>
@@ -101,7 +126,7 @@ const services = [
     id: 4,
     link: "#",
     icon: Icon4,
-    linkType: "blue",
+    linkType: "red",
     title: "Séance Parents-Enfants",
     linkText: "Learn More",
     learnMore: `1 à 4 duo parents-enfants - 45 min/1h<br/>
@@ -115,7 +140,7 @@ const services = [
     id: 5,
     link: "#",
     icon: Icon1,
-    linkType: "yellow",
+    linkType: "red",
     title: "Séance Interventions PECCRAM",
     linkText: "Learn More",
     learnMore: `Ateliers destinés aux enfants de 4 à 12 ans. <br/>
