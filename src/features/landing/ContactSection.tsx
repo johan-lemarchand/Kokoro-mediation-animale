@@ -1,11 +1,64 @@
 "use client";
 
+import { useState } from "react";
 import { FaMapMarkerAlt, FaPhone, FaEnvelope } from "react-icons/fa";
 import { ReactNode } from "react";
 import { EditableText } from "@/features/editable/EditableText";
 import { EditableImage } from "@/features/editable/EditableImage";
+import { EditableDrawer } from "@/features/editable/EditableDrawer";
+import { useEditableContent } from "@/contexts/EditableContentContext";
+import { useSession } from "next-auth/react";
 
 export function ContactSection() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerContent, setDrawerContent] = useState<string | ReactNode>("");
+  const [drawerType, setDrawerType] = useState<"text" | "image">("text");
+  const [currentContentId, setCurrentContentId] = useState("");
+  const { setContent } = useEditableContent();
+  const { data: session } = useSession();
+
+  const isEditable = !!session;
+
+  const handleOpenDrawer = async (type: "text" | "image", contentId: string, initialContent: string) => {
+    try {
+      const response = await fetch(`/api/get-content?id=${contentId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setDrawerContent(data.content);
+      } else if (response.status === 404) {
+        // Content ID does not exist, initialize it with the initial content
+        await fetch('/api/create-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: contentId, content: initialContent, type }),
+        });
+        setDrawerContent(initialContent);
+      } else {
+        throw new Error('Erreur lors de la récupération du contenu');
+      }
+      setDrawerType(type);
+      setCurrentContentId(contentId);
+      setIsDrawerOpen(true);
+    } catch (error) {
+      console.error('Erreur lors de la récupération du contenu:', error);
+    }
+  };
+
+  const handleSave = async (newContent: string) => {
+    const response = await fetch('/api/update-content', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: drawerType, content: newContent, id: currentContentId }),
+    });
+    if (!response.ok) {
+      throw new Error('Erreur lors de la sauvegarde');
+    }
+    setContent(currentContentId, newContent);
+  };
+
+  // Fonction vide pour désactiver l'édition
+  const noop = () => {};
+
   return (
     <main className="relative m-auto flex w-full max-w-7xl flex-col gap-8 px-8 py-12">
       <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-x-3">
@@ -18,6 +71,7 @@ export function ContactSection() {
                 contentId="contact-map-image"
                 className="size-full"
                 objectFit="contain"
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/carte-bas-rhin-departement-618x601.webp") : noop}
               />
             </figure>
           </div>
@@ -28,6 +82,7 @@ export function ContactSection() {
             contentId="contact-intervention-title"
             variant="h2"
             className="mb-3 text-3xl font-bold text-primary"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Lieu d'intervention") : noop}
           />
           <div className="mt-4 text-lg">
             <EditableText
@@ -36,11 +91,16 @@ export function ContactSection() {
               variant="p"
               renderHTML={true}
               className="mt-4 text-lg"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "J'interviens en itinérance dans le Bas-Rhin.<br />Pour plus de renseignements ou un devis, n'hésitez pas à me contacter par téléphone ou par mail.<br /><br /><span class='font-bold'>Louise BURG</span>") : noop}
             />
           </div>
-          <h2 className="mb-3 mt-6 text-3xl font-bold text-primary">
-            Mes informations
-          </h2>
+          <EditableText
+            initialText="Mes informations"
+            contentId="contact-info-title"
+            variant="h2"
+            className="mb-3 mt-6 text-3xl font-bold text-primary"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Mes informations") : noop}
+          />
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <ContactCard
               icon={<FaMapMarkerAlt />}
@@ -63,6 +123,13 @@ export function ContactSection() {
           </div>
         </div>
       </div>
+      <EditableDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        content={drawerType === "image" ? (drawerContent as string) : drawerContent}
+        onSave={handleSave}
+        type={drawerType}
+      />
     </main>
   );
 }

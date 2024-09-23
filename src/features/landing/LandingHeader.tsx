@@ -59,8 +59,9 @@ export function LandingHeader() {
     <motion.header
       style={{
         height: useTransform(scrollYBoundedProgressDelayed, [0, 1], [110, 80]),
+        zIndex: session ? 0 : 30,
       }}
-      className="fixed inset-x-0 z-50 flex h-20 w-screen bg-gradient-to-r from-white via-green-50 to-white"
+      className="fixed inset-x-0 flex h-20 w-screen bg-gradient-to-r from-white via-green-50 to-white"
     >
       <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-8">

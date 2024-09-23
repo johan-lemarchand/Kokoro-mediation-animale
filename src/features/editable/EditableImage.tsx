@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { EditableControls } from "./EditableControls";
+import { useEditableContent } from "@/contexts/EditableContentContext";
 
 interface EditableImageProps {
   src: string;
@@ -12,6 +11,7 @@ interface EditableImageProps {
   className?: string;
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   priority?: boolean;
+  onEdit: (contentId: string) => void;
 }
 
 export const EditableImage = ({ 
@@ -22,75 +22,18 @@ export const EditableImage = ({
   contentId, 
   className = "", 
   objectFit = "cover",
-  priority = false
+  priority = false,
+  onEdit
 }: EditableImageProps) => {
-  const { data: session } = useSession();
+  const { getContent } = useEditableContent();
   const [imageSrc, setImageSrc] = useState(src);
-  const [isEditing, setIsEditing] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchContent = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`/api/get-content?id=${contentId}`);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.content) {
-            setImageSrc(data.content);
-          }
-        }
-      } catch (error) {
-        console.error('Erreur lors du chargement du contenu:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchContent();
-  }, [contentId]);
-
-  const handleEdit = () => {
-    if (session) {
-      setIsEditing(true);
-    }
-  };
-
-  const handleSave = async () => {
-    const response = await fetch('/api/update-content', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: 'image', content: imageSrc, id: contentId }),
-    });
-    if (!response.ok) {
-      throw new Error('Erreur lors de la sauvegarde');
-    }
-    setIsEditing(false);
-  };
-
-  if (isLoading) {
-    return <div>Chargement...</div>;
-  }
-
-  if (isEditing && session) {
-    return (
-      <div className="absolute left-0 z-50">
-        <input
-          type="text"
-          value={imageSrc}
-          onChange={(e) => setImageSrc(e.target.value)}
-          className="w-full rounded border p-2"
-        />
-        <EditableControls
-          onCancel={() => setIsEditing(false)}
-          onSave={handleSave}
-        />
-      </div>
-    );
-  }
+    setImageSrc(getContent(contentId) || src);
+  }, [contentId, getContent, src]);
 
   return (
-    <div onClick={handleEdit} className={`relative ${className}`} style={{ width, height }}>
+    <div onClick={() => onEdit(contentId)} className={`relative ${className}`} style={{ width, height }}>
       <Image 
         src={imageSrc} 
         alt={alt} 

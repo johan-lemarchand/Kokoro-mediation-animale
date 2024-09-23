@@ -34,8 +34,8 @@ export default function ServiceCard({
   return (
     <div className={`overflow-hidden rounded-lg bg-white shadow-md transition-shadow duration-300 hover:shadow-lg ${cardClassName || ''}`}>
       <div className="flex flex-col items-center p-6">
-        <div className={`mb-4 flex size-20 items-center justify-center rounded-full bg-${linkType}-100 ${iconClassName || ''}`}>
-          <Icon className={`size-12 text-${linkType}-500`} />
+        <div className={`bg- mb-4 flex size-20 items-center justify-center rounded-full${linkType}-100 ${iconClassName || ''}`}>
+          <Icon className={`text- size-12${linkType}-500`} />
         </div>
         <h4 className="mb-2 text-center text-xl font-semibold">
           {typeof title === 'string' ? title : title}

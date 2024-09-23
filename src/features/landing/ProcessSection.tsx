@@ -1,7 +1,12 @@
 "use client";
 
+import { useState, ReactNode } from "react";
 import Icons from "@/features/commmon/Icons";
 import { EditableText } from "@/features/editable/EditableText";
+import { EditableDrawer } from "@/features/editable/EditableDrawer";
+import { useEditableContent } from "@/contexts/EditableContentContext";
+import { EditableImage } from "@/features/editable/EditableImage";
+import { useSession } from "next-auth/react";
 
 type ProcessProps = {
   icon: string;
@@ -28,16 +33,67 @@ const objectifList: ProcessProps[] = [
 ];
 
 export function ProcessSection() {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [drawerContent, setDrawerContent] = useState<string | ReactNode>("");
+  const [drawerType, setDrawerType] = useState<"text" | "image">("text");
+  const [currentContentId, setCurrentContentId] = useState("");
+  const { setContent } = useEditableContent();
+  const { data: session } = useSession();
+
+  const isEditable = !!session;
+
+  const handleOpenDrawer = async (type: "text" | "image", contentId: string, initialContent: string) => {
+    try {
+      const response = await fetch(`/api/get-content?id=${contentId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setDrawerContent(data.content);
+      } else if (response.status === 404) {
+        // Content ID does not exist, initialize it with the initial content
+        await fetch('/api/create-content', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: contentId, content: initialContent, type }),
+        });
+        setDrawerContent(initialContent);
+      } else {
+        throw new Error('Erreur lors de la récupération du contenu');
+      }
+      setDrawerType(type);
+      setCurrentContentId(contentId);
+      setIsDrawerOpen(true);
+    } catch (error) {
+      console.error('Erreur lors de la récupération du contenu:', error);
+    }
+  };
+
+  const handleSave = async (newContent: string) => {
+    const response = await fetch('/api/update-content', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: drawerType, content: newContent, id: currentContentId }),
+    });
+    if (!response.ok) {
+      throw new Error('Erreur lors de la sauvegarde');
+    }
+    setContent(currentContentId, newContent);
+  };
+
+  // Fonction vide pour désactiver l'édition
+  const noop = () => {};
+
   return (
     <main className="relative m-auto flex w-full max-w-7xl flex-col gap-8 px-8">
       <div className="sm:gap-13 mt-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-x-3">
         <div className="relative lg:order-1 lg:col-span-4">
           <div className="mx-auto flex aspect-square w-full max-w-[350px] items-center justify-center rounded-lg bg-gray-100 p-4">
             <figure className="relative m-0 size-full">
-              <img
+              <EditableImage
                 src="/images/icone_tout_public.webp"
                 alt="Tout public"
+                contentId="process-image"
                 className="size-full object-contain"
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/icone_tout_public.webp") : noop}
               />
             </figure>
           </div>
@@ -47,11 +103,13 @@ export function ProcessSection() {
             initialText="Les objectifs"
             contentId="process-title"
             variant="h2"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Les objectifs") : noop}
           />
           <EditableText
             initialText="Les objectifs sont adaptés à chaque personne en fonction de ses besoins et de ses capacités. Les différentes activités proposées permettront de travailler tout autant le physique que le psychique comme par exemple la motricité, la coordination, mais en même temps l'attention, l'apaisement."
             contentId="process-description"
             variant="p"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Les objectifs sont adaptés à chaque personne en fonction de ses besoins et de ses capacités. Les différentes activités proposées permettront de travailler tout autant le physique que le psychique comme par exemple la motricité, la coordination, mais en même temps l'attention, l'apaisement.") : noop}
           />
           {objectifList.map((item) => (
             <div
@@ -65,6 +123,7 @@ export function ProcessSection() {
                 initialText={item.text}
                 contentId={item.contentId}
                 variant="p"
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.text) : noop}
               />
             </div>
           ))}
@@ -76,11 +135,13 @@ export function ProcessSection() {
             initialText="Pour qui ?"
             contentId="process-for-who-title"
             variant="h2"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Pour qui ?") : noop}
           />
           <EditableText
             initialText="Tout public ! J'interviens chez des particuliers ou en établissements auprès d'enfants, adolescents, adultes, séniors, personnes en situation de handicap, en soins palliatifs…"
             contentId="process-for-who-description"
             variant="p"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Tout public ! J'interviens chez des particuliers ou en établissements auprès d'enfants, adolescents, adultes, séniors, personnes en situation de handicap, en soins palliatifs…") : noop}
           />
         </div>
         <div className="md:mt-32">
@@ -88,14 +149,23 @@ export function ProcessSection() {
             initialText="L'équipe de médiation"
             contentId="process-team-title"
             variant="h2"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "L'équipe de médiation") : noop}
           />
           <EditableText
             initialText="Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent."
             contentId="process-team-description"
             variant="p"
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent.") : noop}
           />
         </div>
       </div>
+      <EditableDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        content={drawerType === "image" ? (drawerContent as string) : drawerContent}
+        onSave={handleSave}
+        type={drawerType}
+      />
     </main>
   );
 }
