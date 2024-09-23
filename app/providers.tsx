@@ -9,6 +9,7 @@ import { ThemeProvider } from "next-themes";
 import type { PropsWithChildren } from "react";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { env } from "@/lib/env";
+import { LoadingProvider } from '@/contexts/LoadingContext';
 
 const queryClient = new QueryClient();
 
@@ -26,10 +27,12 @@ export const Providers = ({ children }: PropsWithChildren) => {
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
-            <Toaster />
-            <AlertDialogRenderer />
-            <SearchParamsMessageToastSuspended />
-            {children}
+            <LoadingProvider>
+              <Toaster />
+              <AlertDialogRenderer />
+              <SearchParamsMessageToastSuspended />
+              {children}
+            </LoadingProvider>
           </QueryClientProvider>
         </SessionProvider>
       </ThemeProvider>

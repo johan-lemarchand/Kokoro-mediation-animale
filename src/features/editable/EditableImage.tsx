@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { EditableControls } from "./EditableControls";
@@ -27,6 +27,28 @@ export const EditableImage = ({
   const { data: session } = useSession();
   const [imageSrc, setImageSrc] = useState(src);
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`/api/get-content?id=${contentId}`);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.content) {
+            setImageSrc(data.content);
+          }
+        }
+      } catch (error) {
+        console.error('Erreur lors du chargement du contenu:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, [contentId]);
 
   const handleEdit = () => {
     if (session) {
@@ -45,6 +67,10 @@ export const EditableImage = ({
     }
     setIsEditing(false);
   };
+
+  if (isLoading) {
+    return <div>Chargement...</div>;
+  }
 
   if (isEditing && session) {
     return (
