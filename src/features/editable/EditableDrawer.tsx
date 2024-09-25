@@ -1,5 +1,7 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast";
+import { EditableControls } from "./EditableControls";
 
 interface EditableDrawerProps {
   isOpen: boolean;
@@ -12,6 +14,7 @@ interface EditableDrawerProps {
 export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: EditableDrawerProps) => {
   const [newContent, setNewContent] = useState<string>(typeof content === "string" ? content : "");
   const [imagePreview, setImagePreview] = useState<string>(typeof content === "string" ? content : "");
+  const { toast } = useToast();
 
   useEffect(() => {
     if (isOpen) {
@@ -22,9 +25,25 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: Edita
     }
   }, [isOpen, content]);
 
-  const handleSave = () => {
-    onSave(newContent);
-    onClose();
+  const handleSave = async () => {
+    try {
+      await onSave(newContent);
+      toast({
+        title: "Succès",
+        description: "Modifications enregistrées avec succès",
+        variant: "success",
+        duration: 3000,
+      });
+      onClose();
+    } catch (error) {
+      console.error("Erreur lors de la sauvegarde:", error);
+      toast({
+        title: "Erreur",
+        description: "Erreur lors de la sauvegarde. Veuillez réessayer.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    }
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +87,7 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: Edita
             )}
           </div>
           <div className="flex justify-end space-x-2">
-            <button onClick={onClose} className="rounded bg-gray-200 px-4 py-2 text-gray-700">Annuler</button>
-            <button onClick={handleSave} className="rounded bg-blue-600 px-4 py-2 text-white">Enregistrer</button>
+            <EditableControls onCancel={onClose} onSave={handleSave} />
           </div>
         </div>
       </div>

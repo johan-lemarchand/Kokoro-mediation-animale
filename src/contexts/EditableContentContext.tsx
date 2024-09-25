@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback } from 'react';
 
 interface EditableContentContextProps {
   content: { [key: string]: string };
@@ -8,15 +8,15 @@ interface EditableContentContextProps {
 
 const EditableContentContext = createContext<EditableContentContextProps | undefined>(undefined);
 
-export const EditableContentProvider = ({ children }: { children: ReactNode }) => {
+export const EditableContentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [content, setContentState] = useState<{ [key: string]: string }>({});
 
-  const setContent = (id: string, newContent: string) => {
-    setContentState((prevContent) => ({
+  const setContent = useCallback((contentId: string, newContent: string) => {
+    setContentState(prevContent => ({
       ...prevContent,
-      [id]: newContent,
+      [contentId]: newContent
     }));
-  };
+  }, []);
 
   const getContent = (id: string) => {
     return content[id] || '';

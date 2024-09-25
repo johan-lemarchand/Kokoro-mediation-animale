@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { SectionLayout } from "./SectionLayout";
 import Icon1 from "@/components/svg/Icon1Kokoro";
 import Icon2 from "@/components/svg/Icon2Kokoro";
@@ -9,57 +8,32 @@ import Icon4 from "@/components/svg/Icon4Kokoro";
 import ServiceCard from "@/features/commmon/ServiceCard";
 import { EditableText } from "@/features/editable/EditableText";
 import { EditableDrawer } from "@/features/editable/EditableDrawer";
-import { useEditableContent } from "@/contexts/EditableContentContext";
 import { useSession } from "next-auth/react";
+import { useEditableContentManager } from "@/hooks/useEditableContentManager";
 
 export function ServiceSection() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerContent, setDrawerContent] = useState("");
-  const [drawerType, setDrawerType] = useState<"text" | "image">("text");
-  const [currentContentId, setCurrentContentId] = useState("");
-  const { setContent } = useEditableContent();
   const { data: session } = useSession();
-
   const isEditable = !!session;
 
-  const handleOpenDrawer = async (type: "text" | "image", contentId: string, initialText: string) => {
-    try {
-      const response = await fetch(`/api/get-content?id=${contentId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setDrawerContent(data.content);
-      } else if (response.status === 404) {
-        // Content ID does not exist, initialize it with the initial text
-        await fetch('/api/create-content', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: contentId, content: initialText, type }),
-        });
-        setDrawerContent(initialText);
-      } else {
-        throw new Error('Erreur lors de la récupération du contenu');
-      }
-      setDrawerType(type);
-      setCurrentContentId(contentId);
-      setIsDrawerOpen(true);
-    } catch (error) {
-      console.error('Erreur lors de la récupération du contenu:', error);
-    }
-  };
+  const contentIds = [
+    "service-section-title",
+    "service-section-subtitle",
+    ...services.flatMap(service => [
+      `service-title-${service.id}`, 
+      `service-description-${service.id}`,
+      `service-learnMore-${service.id}`
+    ])
+  ];
 
-  const handleSave = async (newContent: string) => {
-    const response = await fetch('/api/update-content', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: drawerType, content: newContent, id: currentContentId }),
-    });
-    if (!response.ok) {
-      throw new Error('Erreur lors de la sauvegarde');
-    }
-    setContent(currentContentId, newContent);
-  };
+  const {
+    isDrawerOpen,
+    setIsDrawerOpen,
+    drawerContent,
+    drawerType,
+    handleOpenDrawer,
+    handleSave,
+  } = useEditableContentManager(contentIds);
 
-  // Fonction vide pour désactiver l'édition
   const noop = () => {};
 
   return (
@@ -104,7 +78,13 @@ export function ServiceSection() {
                 />
               }
               learnMore={
-                <div dangerouslySetInnerHTML={{ __html: item.learnMore }} />
+                <EditableText
+                  initialText={item.learnMore}
+                  contentId={`service-learnMore-${item.id}`}
+                  variant="p"
+                  renderHTML={true}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.learnMore) : noop}
+                />
               }
               linkType={item.linkType}
             />

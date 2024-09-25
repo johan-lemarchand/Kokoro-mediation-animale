@@ -1,61 +1,41 @@
 "use client";
 
-import { ReactNode, useState } from "react";
 import { EditableText } from "@/features/editable/EditableText";
 import { EditableImage } from "@/features/editable/EditableImage";
 import { EditableDrawer } from "@/features/editable/EditableDrawer";
 import AccordionList from "@/features/commmon/AccordionList";
-import { useEditableContent } from "@/contexts/EditableContentContext";
 import { useSession } from "next-auth/react";
+import { useEditableContentManager } from "@/hooks/useEditableContentManager";
 
 export const Hero = () => {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerContent, setDrawerContent] = useState<string | ReactNode>("");
-  const [drawerType, setDrawerType] = useState<"text" | "image">("text");
-  const [currentContentId, setCurrentContentId] = useState("");
-  const { setContent } = useEditableContent();
   const { data: session } = useSession();
-
   const isEditable = !!session;
 
-  const handleOpenDrawer = async (type: "text" | "image", contentId: string, initialContent: string) => {
-    try {
-      const response = await fetch(`/api/get-content?id=${contentId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setDrawerContent(data.content);
-      } else if (response.status === 404) {
-        // Content ID does not exist, initialize it with the initial content
-        await fetch('/api/create-content', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: contentId, content: initialContent, type }),
-        });
-        setDrawerContent(initialContent);
-      } else {
-        throw new Error('Erreur lors de la récupération du contenu');
-      }
-      setDrawerType(type);
-      setCurrentContentId(contentId);
-      setIsDrawerOpen(true);
-    } catch (error) {
-      console.error('Erreur lors de la récupération du contenu:', error);
-    }
-  };
+  const contentIds = [
+    "hero-logo",
+    "hero-title",
+    "hero-description",
+    "hero-triadique-description",
+    "hero-animal-mediateur-title",
+    "hero-animal-mediateur-description",
+    "hero-beneficiaire-title",
+    "hero-beneficiaire-description",
+    "hero-ima-title",
+    "hero-ima-description",
+    "hero-referent-title",
+    "hero-referent-description",
+    "hero-triangle"
+  ];
 
-  const handleSave = async (newContent: string) => {
-    const response = await fetch('/api/update-content', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: drawerType, content: newContent, id: currentContentId }),
-    });
-    if (!response.ok) {
-      throw new Error('Erreur lors de la sauvegarde');
-    }
-    setContent(currentContentId, newContent);
-  };
+  const {
+    isDrawerOpen,
+    setIsDrawerOpen,
+    drawerContent,
+    drawerType,
+    handleOpenDrawer,
+    handleSave,
+  } = useEditableContentManager(contentIds);
 
-  // Fonction vide pour désactiver l'édition
   const noop = () => {};
 
   return (

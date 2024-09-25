@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/accordion";
 import { EditableText } from "@/features/editable/EditableText";
 import { EditableDrawer } from "@/features/editable/EditableDrawer";
-import { useEditableContent } from "@/contexts/EditableContentContext";
+import { useSession } from "next-auth/react";
+import { useEditableContentManager } from "@/hooks/useEditableContentManager";
 
 const accordions = [
   {
@@ -71,48 +72,21 @@ const accordions = [
 ];
 
 export default function AccordionList() {
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [drawerContent, setDrawerContent] = useState("");
-  const [drawerType, setDrawerType] = useState<"text" | "image">("text");
-  const [currentContentId, setCurrentContentId] = useState("");
-  const { setContent } = useEditableContent();
+  const { data: session } = useSession();
+  const isEditable = !!session;
 
-  const handleOpenDrawer = async (type: "text" | "image", contentId: string, initialText: string) => {
-    try {
-      const response = await fetch(`/api/get-content?id=${contentId}`);
-      if (response.ok) {
-        const data = await response.json();
-        setDrawerContent(data.content);
-      } else if (response.status === 404) {
-        // Content ID does not exist, initialize it with the initial text
-        await fetch('/api/create-content', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: contentId, content: initialText, type }),
-        });
-        setDrawerContent(initialText);
-      } else {
-        throw new Error('Erreur lors de la récupération du contenu');
-      }
-      setDrawerType(type);
-      setCurrentContentId(contentId);
-      setIsDrawerOpen(true);
-    } catch (error) {
-      console.error('Erreur lors de la récupération du contenu:', error);
-    }
-  };
+  const contentIds = accordions.flatMap(item => [item.headingId, item.bodyId]);
 
-  const handleSave = async (newContent: string) => {
-    const response = await fetch('/api/update-content', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ type: drawerType, content: newContent, id: currentContentId }),
-    });
-    if (!response.ok) {
-      throw new Error('Erreur lors de la sauvegarde');
-    }
-    setContent(currentContentId, newContent);
-  };
+  const {
+    isDrawerOpen,
+    setIsDrawerOpen,
+    drawerContent,
+    drawerType,
+    handleOpenDrawer,
+    handleSave,
+  } = useEditableContentManager(contentIds);
+
+  const noop = () => {};
 
   return (
     <div className="relative pt-1">
@@ -131,7 +105,7 @@ export default function AccordionList() {
                       initialText={item.heading}
                       contentId={item.headingId}
                       variant="p"
-                      onEdit={(contentId) => handleOpenDrawer("text", contentId, item.heading)}
+                      onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.heading) : noop}
                     />
                   </AccordionTrigger>
                   <AccordionContent>
@@ -139,7 +113,7 @@ export default function AccordionList() {
                       initialText={item.body}
                       contentId={item.bodyId}
                       variant="p"
-                      onEdit={(contentId) => handleOpenDrawer("text", contentId, item.body)}
+                      onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.body) : noop}
                     />
                   </AccordionContent>
                 </AccordionItem>
