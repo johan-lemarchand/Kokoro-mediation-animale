@@ -10,7 +10,7 @@ import type { PropsWithChildren } from "react";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 import { env } from "@/lib/env";
 import { LoadingProvider } from '@/contexts/LoadingContext';
-import { EditableContentProvider } from "@/contexts/EditableContentContext"; // Importer le fournisseur de contexte
+import { EditableContentProvider } from "@/contexts/EditableContentContext";
 
 const queryClient = new QueryClient();
 
@@ -29,7 +29,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
             <LoadingProvider>
-              <EditableContentProvider> {/* Envelopper les composants avec le fournisseur de contexte */}
+              <EditableContentProvider>
                 <Toaster />
                 <AlertDialogRenderer />
                 <SearchParamsMessageToastSuspended />

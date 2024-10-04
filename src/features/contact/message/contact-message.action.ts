@@ -7,7 +7,7 @@ import ContactMessageEmail from "@email/ContactMessage.email";
 export async function submitContactForm(values: ContactFormSchemaType) {
   try {
     await sendEmail({
-      to: "delivered@resend.dev",
+      to: "contact@kokoro-mediation-animale.fr",
       subject: `Nouveau message de contact de ${values.name}`,
       react: ContactMessageEmail({
         name: values.name,

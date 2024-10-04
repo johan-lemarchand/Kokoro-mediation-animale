@@ -100,11 +100,12 @@ export default function AccordionList() {
             <div className="accordion-wrapper">
               <Accordion type="single" collapsible>
                 <AccordionItem value={item.no}>
-                  <AccordionTrigger>
+                  <AccordionTrigger className="justify-start">
                     <EditableText
                       initialText={item.heading}
                       contentId={item.headingId}
                       variant="p"
+                      className="w-full text-left"
                       onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.heading) : noop}
                     />
                   </AccordionTrigger>

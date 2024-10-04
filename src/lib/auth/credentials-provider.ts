@@ -7,7 +7,7 @@ import type { NextRequest } from "next/server";
 import { env } from "../env";
 import { prisma } from "../prisma";
 import { AUTH_COOKIE_NAME } from "./auth.const";
-import { addDays } from "date-fns";
+import { addDays, addHours } from "date-fns";
 
 const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{8,}$/;
 
@@ -88,7 +88,7 @@ export const credentialsSignInCallback =
     }
 
     const uuid = nanoid();
-    const expireAt = addDays(new Date(), 14);
+    const expireAt = addHours(new Date(), 2);
     await prisma.session.create({
       data: {
         sessionToken: uuid,
