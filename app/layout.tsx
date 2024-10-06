@@ -14,8 +14,13 @@ import { Providers } from "./providers";
 import { ClientRootLayoutContent } from "./clientRootLayoutContent";
 
 export const metadata: Metadata = {
-  title: SiteConfig.title,
-  description: SiteConfig.description,
+  title:
+    'Kokoro Médiation Animale | Bien-être par la Médiation Animale dans le Bas-Rhin en Alsace',
+  description:
+    'Découvrez Kokoro Médiation Animale, spécialiste en médiation animale dans le Bas-Rhin, en Alsace. Nous offrons des services de bien-être, de développement personnel et de renforcement de la confiance en soi grâce à des interactions enrichissantes avec les animaux. Basés en région Bas-Rhin, nous sensibilisons au respect des animaux et développons des apprentissages pour tous, adaptés à votre environnement local.',
+  keywords:
+    'médiation animale, bien-être animal, confiance en soi, développement personnel, respect des animaux, apprentissage, interactions animales, Kokoro',
+  robots: 'index, follow',
   metadataBase: new URL(getServerUrl()),
 };
 
