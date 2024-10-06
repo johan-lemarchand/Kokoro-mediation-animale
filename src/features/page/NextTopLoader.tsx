@@ -152,7 +152,7 @@ export const NextTopLoader = ({
     };
 
     const handleClick = (event: MouseEvent) => {
-      if (useNextTopLoaderStore.getState().isEnable === false) return;
+      if (!useNextTopLoaderStore.getState().isEnable) return;
 
       // if ctrl or cmd key is pressed, don't intercept
       if (event.ctrlKey || event.metaKey) return;

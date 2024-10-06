@@ -11,8 +11,7 @@ export const auth = async () => {
   const session = await baseAuth();
 
   if (session?.user) {
-    const user = session.user as User;
-    return user;
+    return session.user as User;
   }
 
   return null;

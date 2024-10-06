@@ -6,20 +6,20 @@ import { EmailLink, EmailSection, EmailText } from "./utils/components.utils";
 export default function VerifyEmail({ url }: { url: string }) {
   return (
     <EmailLayout>
-      <Preview>Please click the link below to sign in to your account.</Preview>
+      <Preview>Veuillez cliquer sur le lien ci-dessous pour vous connecter à votre compte.</Preview>
       <EmailSection>
         <EmailText>
           <EmailLink href={url}>
-            👉 Click here to verify your email 👈
+            👉 Cliquez ici pour vérifier votre adresse e-mail 👈
           </EmailLink>
         </EmailText>
         <EmailText>
-          If you didn't request this, please ignore this email.
+          Si vous n'avez pas demandé cela, veuillez ignorer cet e-mail.
         </EmailText>
       </EmailSection>
       <Text className="text-lg leading-6">
-        Best,
-        <br />- {SiteConfig.maker.name} from {SiteConfig.title}
+        Meilleur,
+        <br />- {SiteConfig.maker.name} de {SiteConfig.title}
       </Text>
     </EmailLayout>
   );

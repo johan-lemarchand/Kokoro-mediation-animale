@@ -18,7 +18,7 @@ export const SiteConfig = {
      * If you don't have one, you can use `test@resend.com`
      * If you use Resend domain, you can ONLY send email to your account email.
      */
-    from: "Kokoro médiation animale <delivered@resend.dev>",
+    from: "Kokoro médiation animale <contact@kokoro-mediation-animale.fr>",
     contact: "kokoro.mediation.animale@gmail.com",
   },
   maker: {

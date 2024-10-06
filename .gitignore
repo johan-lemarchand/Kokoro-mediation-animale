@@ -35,4 +35,7 @@ yarn-error.log*
 
 .env
 
-.cursorrules!/.env
+.cursorrules!
+/.env
+# Ignore the entire .idea directory
+.idea/

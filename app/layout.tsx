@@ -11,6 +11,7 @@ import type { ReactNode } from "react";
 import "./code-theme.scss";
 import "./globals.scss";
 import { Providers } from "./providers";
+import { ClientRootLayoutContent } from "./clientRootLayoutContent";
 
 export const metadata: Metadata = {
   title: SiteConfig.title,
@@ -23,31 +24,31 @@ export default function RootLayout({
   modal,
 }: LayoutParams & { modal?: ReactNode }) {
   return (
-    <>
-      <html lang="fr" suppressHydrationWarning>
-        <head>
-          <PlausibleProvider domain={SiteConfig.domain} />
-          <title>médiation par l'animal</title>
-        </head>
-        <body
-          suppressHydrationWarning
-          className={cn(
-            "h-full bg-background font-sans antialiased",
-            GeistMono.variable,
-            GeistSans.variable,
-          )}
-        >
-          <Providers>
-            <NextTopLoader
-              delay={100}
-              showSpinner={false}
-              color="hsl(var(--primary))"
-            />
+    <html lang="fr" suppressHydrationWarning>
+      <head>
+        <PlausibleProvider domain={SiteConfig.domain} />
+        <title>médiation par l'animal</title>
+      </head>
+      <body
+        suppressHydrationWarning
+        className={cn(
+          "h-full bg-background font-sans antialiased",
+          GeistMono.variable,
+          GeistSans.variable,
+        )}
+      >
+        <Providers>
+          <NextTopLoader
+            delay={100}
+            showSpinner={false}
+            color="hsl(var(--primary))"
+          />
+          <ClientRootLayoutContent>
             {children}
             {modal}
-          </Providers>
-        </body>
-      </html>
-    </>
+          </ClientRootLayoutContent>
+        </Providers>
+      </body>
+    </html>
   );
 }

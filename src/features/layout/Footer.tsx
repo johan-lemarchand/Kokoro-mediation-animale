@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import { Typography } from "@/components/ui/typography";
 import { Layout, LayoutContent } from "@/features/page/layout";
@@ -12,6 +14,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Link from "next/link";
+import { useSession, signOut } from "next-auth/react";
 
 export const Footer = () => {
   return (
@@ -139,49 +142,47 @@ export const Footer = () => {
                   </div>
                 </DialogContent>
               </Dialog>
-              <Link href="/auth/signin">
-                <Typography
-                  variant="muted"
-                  className="text-left hover:underline"
-                >
-                  Connexion
-                </Typography>
-              </Link>
+              <AuthButton />
             </div>
             <div className="ml-2 flex flex-col gap-4">
               <Typography variant="large">Mes réseaux</Typography>
               <SocialLinks />
             </div>
-            {/*<div className="flex flex-col gap-4">
-              <Typography variant="large">Ressources</Typography>
-              <Typography
-                as={Link}
-                variant="muted"
-                className="hover:underline"
-                href="/posts"
-              >
-                Blog
-              </Typography>
-              <Typography
-                as={Link}
-                variant="muted"
-                className="hover:underline"
-                href="/org"
-              >
-                Tableau de bord
-              </Typography>
-              <Typography
-                as={Link}
-                variant="muted"
-                className="hover:underline"
-                href="/account"
-              >
-                Compte
-              </Typography>
-            </div>*/}
           </div>
         </LayoutContent>
       </Layout>
     </footer>
+  );
+};
+
+const AuthButton = () => {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <Typography variant="muted">Chargement...</Typography>;
+  }
+
+  if (session) {
+    return (
+      <Typography
+        as="button"
+        variant="muted"
+        className="text-left hover:underline"
+        onClick={() => signOut()}
+      >
+        Déconnexion
+      </Typography>
+    );
+  }
+
+  return (
+    <Link href="/auth/signin">
+      <Typography
+        variant="muted"
+        className="text-left hover:underline"
+      >
+        Connexion
+      </Typography>
+    </Link>
   );
 };
