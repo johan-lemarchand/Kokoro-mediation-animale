@@ -28,7 +28,7 @@ const handleReturnedServerError: HandleReturnedServerError = (e) => {
 };
 
 export const action = createSafeActionClient({
-  handleReturnedServerError,
+  handleServerError: handleReturnedServerError,
 });
 
 const getUser = async () => {
@@ -49,7 +49,7 @@ const getUser = async () => {
 };
 
 export const authAction = createSafeActionClient({
-  handleReturnedServerError,
+  handleServerError: handleReturnedServerError,
 }).use(async ({ next }) => {
   const user = await getUser();
 
