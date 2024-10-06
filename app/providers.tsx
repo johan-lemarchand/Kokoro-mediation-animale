@@ -25,7 +25,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
         nonce: undefined,
       }}
     >
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
         <SessionProvider>
           <QueryClientProvider client={queryClient}>
             <LoadingProvider>
