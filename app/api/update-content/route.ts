@@ -18,7 +18,6 @@ export async function POST(request: Request) {
       create: { id, type, content },
     });
 
-    NextResponse.next().headers.set('Cache-Control', 'no-store');
     return NextResponse.json(updatedContent);
   } catch (error) {
     console.error('Erreur lors de la mise à jour du contenu:', error);

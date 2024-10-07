@@ -57,12 +57,26 @@ export const Hero = () => {
             variant="h2"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Qu'est-ce que la médiation par l'animal ?") : noop}
           />
-          <EditableText
-            initialText="La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives visant le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes. L'animal, naturel et non jugeant favorise la création d'un lien permettant d'initier le dialogue et les interactions positives."
-            contentId="hero-description"
-            className="mb-5"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives visant le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes. L'animal, naturel et non jugeant favorise la création d'un lien permettant d'initier le dialogue et les interactions positives.") : noop}
-          />
+          <div className="space-y-2">
+            <EditableText
+              initialText="La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives."
+              contentId="hero-description-1"
+              className="mb-2"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives.") : noop}
+            />
+            <EditableText
+              initialText="Ces interactions visent le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes."
+              contentId="hero-description-2"
+              className="mb-2"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Ces interactions visent le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes.") : noop}
+            />
+            <EditableText
+              initialText="L'animal, naturel et non jugeant, favorise la création d'un lien permettant d'initier le dialogue et les interactions positives."
+              contentId="hero-description-3"
+              className="mb-2"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "L'animal, naturel et non jugeant, favorise la création d'un lien permettant d'initier le dialogue et les interactions positives.") : noop}
+            />
+          </div>
         </div>
         <div className="flex flex-1 flex-col">
           <EditableText
