@@ -1,0 +1,41 @@
+name: Launch StablePush Tests
+on:
+  push:
+    branches:
+      - "**"
+jobs:
+  trigger-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      # Step 4: Build the project
+      - name: Build the project
+        run: pnpm run build
+
+      # Step 5: Serve the built project (locally using a static server)
+      - name: Serve the project
+        run: |
+          pnpm install -g http-server
+          http-server ./build &
+          sleep 10  # Give the server time to start
+
+      # Step 6: Run Puppeteer to fetch the HTML and send it to your service
+      - name: Fetch HTML and Send to Service
+        run: |
+          pnpm install puppeteer@23.4.0 axios@1.7.7 axe-puppeteer@1.1.1 lighthouse@12.2.1
+          node ./.github/stablepush_scripts/StablePushScript.mjs
+        env:
+          STABLEPUSH_SECRET_TOKEN: ${{ secrets.STABLEPUSH_SECRET_TOKEN }}

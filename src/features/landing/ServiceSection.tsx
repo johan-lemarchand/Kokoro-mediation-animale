@@ -74,6 +74,7 @@ export function ServiceSection() {
                   initialText={item.description}
                   contentId={`service-description-${item.id}`}
                   variant="p"
+                  renderHTML={true}
                   onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.description) : noop}
                 />
               }
