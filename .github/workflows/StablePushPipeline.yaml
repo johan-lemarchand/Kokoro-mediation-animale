@@ -19,7 +19,7 @@ jobs:
           node-version: "20"
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm install
 
       # Step 4: Build the project
       - name: Build the project
@@ -28,14 +28,14 @@ jobs:
       # Step 5: Serve the built project (locally using a static server)
       - name: Serve the project
         run: |
-          pnpm install -g http-server
+          npm install -g http-server
           http-server ./build &
           sleep 10  # Give the server time to start
 
       # Step 6: Run Puppeteer to fetch the HTML and send it to your service
       - name: Fetch HTML and Send to Service
         run: |
-          pnpm install puppeteer@23.4.0 axios@1.7.7 axe-puppeteer@1.1.1 lighthouse@12.2.1
+          npm install puppeteer@23.4.0 axios@1.7.7 axe-puppeteer@1.1.1 lighthouse@12.2.1
           node ./.github/stablepush_scripts/StablePushScript.mjs
         env:
           STABLEPUSH_SECRET_TOKEN: ${{ secrets.STABLEPUSH_SECRET_TOKEN }}
