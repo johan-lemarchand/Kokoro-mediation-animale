@@ -44,7 +44,7 @@ export function ServiceSection() {
             initialText="Mes prestations"
             contentId="service-section-title"
             variant="h2"
-            className="mb-4 text-3xl font-bold"
+            className="md:text-3l mb-4 text-2xl font-bold sm:text-2xl lg:text-3xl"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Mes prestations") : noop}
           />
           <EditableText

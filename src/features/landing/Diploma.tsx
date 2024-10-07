@@ -47,16 +47,17 @@ export const DiplomaSection = () => {
             initialText="Qui suis-je ?"
             contentId="diploma-title"
             variant="h2"
+            className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Qui suis-je ?") : noop}
           />
         </Typography>
-        <div className="relative z-10 m-8 text-center text-lg text-white drop-shadow-sm">
+        <div className="relative z-10 text-center text-lg text-white drop-shadow-sm">
           <EditableText
             initialText="Louise, éducatrice de jeunes enfants et médiatrice animale passionnée ! 🌟 Depuis toujours, les animaux occupent une place spéciale dans ma vie, ayant grandi entourée de leur bienveillance. C'est cette connexion unique entre l'homme et l'animal, et les incroyables bienfaits qu'elle apporte, qui m'ont inspiré à exercer en tant qu'intervenante en médiation par l'animal. Après plusieurs années d'expérience dans la relation d'aide, inclure l'animal a été pour moi une évidence!"
             contentId="diploma-description"
             variant="p"
             renderHTML={true}
-            className="relative z-10 m-8 text-center text-lg text-white drop-shadow-sm"
+            className="relative z-10 mx-auto flex h-full max-w-3xl items-center justify-center px-4 py-6 text-center text-sm text-white drop-shadow-sm sm:px-8 sm:text-base md:text-lg"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Louise, éducatrice de jeunes enfants et médiatrice animale passionnée ! 🌟 Depuis toujours, les animaux occupent une place spéciale dans ma vie, ayant grandi entourée de leur bienveillance. C'est cette connexion unique entre l'homme et l'animal, et les incroyables bienfaits qu'elle apporte, qui m'ont inspiré à exercer en tant qu'intervenante en médiation par l'animal. Après plusieurs années d'expérience dans la relation d'aide, inclure l'animal a été pour moi une évidence!") : noop}
           />
         </div>
@@ -71,6 +72,7 @@ export const DiplomaSection = () => {
             initialText="Mes diplômes"
             contentId="diploma-subtitle"
             variant="h2"
+            className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Mes diplômes") : noop}
           />
         </Typography>

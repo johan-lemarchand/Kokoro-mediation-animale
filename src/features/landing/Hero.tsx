@@ -39,22 +39,22 @@ export const Hero = () => {
   const noop = () => {};
 
   return (
-    <main className="relative m-auto my-12 mt-32 flex w-full max-w-7xl flex-col gap-8 px-8">
+    <main className="relative m-auto my-12 mt-24 flex w-full max-w-7xl flex-col gap-8 px-8">
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="flex flex-1 flex-col items-center gap-4 text-center lg:gap-6 xl:gap-8">
           <EditableImage
             src="/images/logo-compressé.webp"
             alt="Logo Kokoro Médiation Animale"
-            width={200}
-            height={250}
             contentId="hero-logo"
             priority={true}
+            className="hidden h-[250px] w-[200px] object-contain lg:block"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/logo-compressé.webp") : noop}
           />
           <EditableText
             initialText="Qu'est-ce que la médiation par l'animal ?"
             contentId="hero-title"
             variant="h2"
+            className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Qu'est-ce que la médiation par l'animal ?") : noop}
           />
           <div className="space-y-2">
@@ -151,8 +151,6 @@ export const Hero = () => {
             <EditableImage
               src="/images/triangle_MA.webp"
               alt="Triangle de médiation animale"
-              width={300}
-              height={300}
               contentId="hero-triangle"
               priority={true}
               onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/triangle_MA.webp") : noop}

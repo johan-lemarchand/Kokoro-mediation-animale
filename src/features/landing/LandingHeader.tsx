@@ -9,6 +9,7 @@ import Link from "next/link";
 import SocialLinks from "@/features/social/SocialLinks";
 import { Mails } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { EditableImage } from "@/features/editable/EditableImage";
 
 function useBoundedScroll(threshold: number) {
   const { scrollY } = useScroll();
@@ -54,6 +55,10 @@ export function LandingHeader() {
     [0, 0, 1],
   );
   const { data: session } = useSession();
+  const isEditable = true;
+  const handleOpenDrawer = (type: string, contentId: string, src: string) => {
+  };
+  const noop = () => {};
 
   return (
     <motion.header
@@ -65,28 +70,40 @@ export function LandingHeader() {
     >
       <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-green-200 to-transparent"></div>
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 lg:px-8">
-        <div className="flex items-center gap-1">
-          <motion.p
-            style={{
-              scale: useTransform(
-                scrollYBoundedProgressDelayed,
-                [0, 1],
-                [1, 0.9],
-              ),
-            }}
-            className="custom-font-text flex origin-left items-center text-xl font-semibold uppercase max-sm:hidden"
-          >
-            {SiteConfig.title}
-          </motion.p>
-          <span className="font-custom ml-2 hidden text-nowrap text-xl text-primary sm:block">
-            <Typewriter
-              options={{
-                loop: true,
-                autoStart: true,
-                strings: ["Médiation animale"],
-              }}
+        <div className="flex items-center gap-4">
+          <div className="lg:hidden">
+            <EditableImage
+              src="/images/logo-compressé.webp"
+              alt="Logo Kokoro Médiation Animale"
+              contentId="header-logo"
+              priority={true}
+              className="size-16 object-contain md:size-20"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/logo-compressé.webp") : noop}
             />
-          </span>
+          </div>
+          <div className="flex flex-col">
+            <motion.p
+              style={{
+                scale: useTransform(
+                  scrollYBoundedProgressDelayed,
+                  [0, 1],
+                  [1, 0.9],
+                ),
+              }}
+              className="custom-font-text flex origin-left items-center text-xl font-semibold uppercase max-sm:hidden"
+            >
+              {SiteConfig.title}
+            </motion.p>
+            <span className="font-custom ml-2 hidden text-nowrap text-xl text-primary sm:block">
+              <Typewriter
+                options={{
+                  loop: true,
+                  autoStart: true,
+                  strings: ["Médiation animale"],
+                }}
+              />
+            </span>
+          </div>
         </div>
         <motion.nav
           style={{
