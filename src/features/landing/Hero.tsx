@@ -48,6 +48,7 @@ export const Hero = () => {
             width={200}
             height={250}
             contentId="hero-logo"
+            priority={true}
             onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/logo-compressé.webp") : noop}
           />
           <EditableText
@@ -139,6 +140,7 @@ export const Hero = () => {
               width={300}
               height={300}
               contentId="hero-triangle"
+              priority={true}
               onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/triangle_MA.webp") : noop}
             />
           </div>

@@ -1,12 +1,14 @@
-import { TeamGridSection } from "@/features/landing/TeamSection";
 import { Hero } from "@/features/landing/Hero";
 import { LandingHeader } from "@/features/landing/LandingHeader";
-import { DiplomaSection } from "@/features/landing/Diploma";
-import { ContactMessageSection } from "@/features/contact/message/contactMessageSection";
 import { Footer } from "@/features/layout/Footer";
 import { ProcessSection } from "@/features/landing/ProcessSection";
 import { ServiceSection } from "@/features/landing/ServiceSection";
 import { ContactSection } from "@/features/landing/ContactSection";
+import dynamic from 'next/dynamic';
+
+const DynamicTeamGridSection = dynamic(() => import('@/features/landing/TeamSection').then(mod => mod.TeamGridSection), { ssr: false });
+const DynamicDiplomaSection = dynamic(() => import('@/features/landing/Diploma').then(mod => mod.DiplomaSection), { ssr: false });
+const DynamicContactMessageSection = dynamic(() => import('@/features/contact/message/contactMessageSection').then(mod => mod.ContactMessageSection), { ssr: false });
 
 export default function HomePage() {
   return (
@@ -19,15 +21,14 @@ export default function HomePage() {
 
       <ProcessSection />
 
-      <TeamGridSection />
-
-      <DiplomaSection />
+      <DynamicTeamGridSection />
+      <DynamicDiplomaSection />
 
       <ServiceSection />
 
       <ContactSection />
 
-      <ContactMessageSection />
+      <DynamicContactMessageSection />
 
       <Footer />
     </div>

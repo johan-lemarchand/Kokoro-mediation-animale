@@ -30,10 +30,8 @@ export const EditableText = ({ initialText, contentId, variant = "p", className,
 
   if (isLoading) {
     return (
-      <div className="animate-pulse">
-        <div className="mb-2 h-4 w-3/4 rounded bg-gray-200"></div>
-        <div className="mb-2 h-4 w-1/2 rounded bg-gray-200"></div>
-        <div className="h-4 w-5/6 rounded bg-gray-200"></div>
+      <div className={`animate-pulse ${className}`} style={{ height: '1em', width: '100%' }}>
+        <div className="h-full w-full rounded bg-gray-200"></div>
       </div>
     );
   }

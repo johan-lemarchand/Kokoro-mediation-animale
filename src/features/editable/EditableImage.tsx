@@ -45,10 +45,9 @@ export const EditableImage = ({
       <div 
         className={`animate-pulse bg-gray-200 ${className || ''}`}
         style={{ 
-          width: width ? `${width}px` : '100%', 
-          height: height ? `${height}px` : '0',
-          paddingBottom: !height ? '100%' : '0',
-          aspectRatio: width && height ? `${width} / ${height}` : 'auto'
+          width: width || '100%', 
+          height: height || '100%',
+          aspectRatio: width && height ? `${width} / ${height}` : '1',
         }}
       />
     );
