@@ -11,7 +11,6 @@ import type { ReactNode } from "react";
 import "./code-theme.scss";
 import "./globals.scss";
 import { Providers } from "./providers";
-import { ClientRootLayoutContent } from "./clientRootLayoutContent";
 
 export const metadata: Metadata = {
   title:
@@ -48,10 +47,8 @@ export default function RootLayout({
             showSpinner={false}
             color="hsl(var(--primary))"
           />
-          <ClientRootLayoutContent>
             {children}
             {modal}
-          </ClientRootLayoutContent>
         </Providers>
       </body>
     </html>

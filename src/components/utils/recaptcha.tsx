@@ -1,10 +1,5 @@
-import {
-  useEffect,
-  useCallback,
-  useRef,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import { useEffect, useCallback, useRef, forwardRef, useImperativeHandle } from "react";
+import dynamic from 'next/dynamic';
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface RecaptchaProps {
@@ -50,9 +45,9 @@ const Recaptcha = forwardRef<{ reset: () => void }, RecaptchaProps>(
     }, [handleReCaptchaVerify]);
 
     return null;
-  },
+  }
 );
 
 Recaptcha.displayName = "Recaptcha";
 
-export default Recaptcha;
+export default dynamic(() => Promise.resolve(Recaptcha), { ssr: false });

@@ -3,44 +3,68 @@ import Image from "next/image";
 import { useEditableContent } from "@/contexts/EditableContentContext";
 
 interface EditableImageProps {
-  src: string;
-  alt: string;
-  width?: number | string;
-  height?: number | string;
+  initialSrc: string;
   contentId: string;
+  alt: string;
+  width?: number;
+  height?: number;
   className?: string;
+  onEdit: (contentId: string) => void;
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   priority?: boolean;
-  onEdit: (contentId: string) => void;
 }
 
 export const EditableImage = ({ 
-  src, 
+  initialSrc, 
+  contentId, 
   alt, 
   width, 
   height, 
-  contentId, 
-  className = "", 
+  className, 
+  onEdit,
   objectFit = "cover",
-  priority = false,
-  onEdit
+  priority = false
 }: EditableImageProps) => {
   const { getContent } = useEditableContent();
-  const [imageSrc, setImageSrc] = useState(src);
+  const [src, setSrc] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setImageSrc(getContent(contentId) || src);
-  }, [contentId, getContent, src]);
+    const fetchContent = async () => {
+      setIsLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      const content = getContent(contentId);
+      setSrc(content || initialSrc);
+      setIsLoading(false);
+    };
+    fetchContent();
+  }, [contentId, getContent, initialSrc]);
+
+  if (isLoading) {
+    return (
+      <div 
+        className={`animate-pulse bg-gray-200 ${className || ''}`}
+        style={{ 
+          width: width ? `${width}px` : '100%', 
+          height: height ? `${height}px` : '0',
+          paddingBottom: !height ? '100%' : '0',
+          aspectRatio: width && height ? `${width} / ${height}` : 'auto'
+        }}
+      />
+    );
+  }
 
   return (
-    <div onClick={() => onEdit(contentId)} className={`relative ${className}`} style={{ width, height }}>
-      <Image 
-        src={imageSrc} 
-        alt={alt} 
-        fill={width === undefined || height === undefined}
-        width={typeof width === 'number' ? width : undefined}
-        height={typeof height === 'number' ? height : undefined}
-        style={{ objectFit }}
+    <div className={`relative ${className || ''}`} style={{ width: 'auto', height: 'auto' }}>
+      <Image
+        src={src}
+        alt={alt}
+        layout={width && height ? "fixed" : "responsive"}
+        width={width || 100}
+        height={height || 100}
+        objectFit={objectFit}
+        className={className}
+        onClick={() => onEdit(contentId)}
         priority={priority}
       />
     </div>

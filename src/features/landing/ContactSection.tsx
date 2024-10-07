@@ -38,7 +38,7 @@ export function ContactSection() {
           <div className="mx-auto flex aspect-square w-full max-w-[350px] items-center justify-center rounded-lg bg-gray-100 p-4">
             <figure className="relative m-0 size-full">
               <EditableImage
-                src="/images/carte-bas-rhin-departement-618x601.webp"
+                initialSrc="/images/carte-bas-rhin-departement-618x601.webp"
                 alt="Carte bas Rhin"
                 contentId="contact-map-image"
                 className="size-full"

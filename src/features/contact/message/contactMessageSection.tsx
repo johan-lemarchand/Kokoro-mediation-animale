@@ -1,18 +1,23 @@
 "use client";
 
 import React, { useState, useRef, useEffect, useCallback } from "react";
+import dynamic from 'next/dynamic';
 import { buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Typography } from "@/components/ui/typography";
 import { usePlausible } from "next-plausible";
 import { useToast } from "@/components/ui/use-toast";
 import { SectionLayout } from "../../landing/SectionLayout";
-import Recaptcha from "@/components/utils/recaptcha";
 import { ContactFormSchema } from "./contact-message.schema";
 import { submitContactForm } from "./contact-message.action";
 import { z } from "zod";
 import { Toaster } from "@/components/ui/toaster";
 import { LoadingButton } from "@/features/form/SubmitButton";
+
+const DynamicRecaptcha = dynamic(() => import('@/components/utils/recaptcha'), {
+  loading: () => <p>Chargement du reCAPTCHA...</p>,
+  ssr: false
+});
 
 export function ContactMessageSection() {
   const plausible = usePlausible();
@@ -213,7 +218,7 @@ export function ContactMessageSection() {
           )}
 
           <div className="mt-6">
-            <Recaptcha
+            <DynamicRecaptcha
               key={recaptchaKey}
               onVerify={handleRecaptchaVerify}
               ref={recaptchaRef}

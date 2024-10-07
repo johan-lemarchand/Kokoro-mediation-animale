@@ -63,15 +63,13 @@ export function ProcessSection() {
       <div className="sm:gap-13 mt-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-x-3">
         <div className="relative lg:order-1 lg:col-span-4">
           <div className="mx-auto flex aspect-square w-full max-w-[350px] items-center justify-center rounded-lg bg-gray-100 p-4">
-            <figure className="relative m-0 size-full">
-              <EditableImage
-                src="/images/icone_tout_public.webp"
-                alt="Tout public"
-                contentId="process-image"
-                className="size-full object-contain"
-                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/icone_tout_public.webp") : noop}
-              />
-            </figure>
+            <EditableImage
+              initialSrc="/images/icone_tout_public.webp"
+              alt="Tout public"
+              contentId="process-image"
+              className="size-full object-contain"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/icone_tout_public.webp") : noop}
+            />
           </div>
         </div>
         <div className="lg:order-2 lg:col-span-7 xl:col-span-7 xl:col-start-6">
