@@ -29,6 +29,7 @@ export async function POST(request: Request) {
       return acc;
     }, {});
 
+    NextResponse.next().headers.set('Cache-Control', 'public, max-age=3600, s-maxage=3600, stale-while-revalidate=86400');
     return NextResponse.json(contentMap);
   } catch (error) {
     console.error('Erreur lors de la récupération du contenu:', error);
