@@ -13,37 +13,20 @@ interface EditableTextProps {
 
 export const EditableText = ({ initialText, contentId, variant = "p", className, renderHTML = false, onEdit }: EditableTextProps) => {
   const { getContent } = useEditableContent();
-  const [text, setText] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [text, setText] = useState(initialText);
 
   useEffect(() => {
-    const fetchContent = async () => {
-      setIsLoading(true);
-      // Simuler un délai de chargement pour voir l'effet
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      const content = getContent(contentId);
-      setText(content || initialText);
-      setIsLoading(false);
-    };
-    fetchContent();
+    setText(getContent(contentId) || initialText);
   }, [contentId, getContent, initialText]);
-
-  if (isLoading) {
-    return (
-      <div className={`animate-pulse ${className}`} style={{ height: '1em', width: '100%' }}>
-        <div className="h-full w-full rounded bg-gray-200"></div>
-      </div>
-    );
-  }
 
   const content = renderHTML ? (
     <span dangerouslySetInnerHTML={{ __html: text }} />
   ) : text;
 
   return (
-    <Typography 
-      variant={variant} 
-      onClick={() => onEdit(contentId)} 
+    <Typography
+      variant={variant}
+      onClick={() => onEdit(contentId)}
       className={`w-full ${className || ''}`}
     >
       {content}

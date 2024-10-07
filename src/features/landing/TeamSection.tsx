@@ -49,10 +49,10 @@ export function TeamGridSection() {
             }
             image={
               <EditableImage
-                initialSrc={item.image}
+                src={item.image}
                 alt={item.name}
                 contentId={item.imageId}
-                className="w-full h-full"
+                className="size-full"
                 objectFit="cover"
                 onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, item.image) : noop}
               />

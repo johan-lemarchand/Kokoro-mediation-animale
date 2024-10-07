@@ -64,7 +64,7 @@ export function ProcessSection() {
         <div className="relative lg:order-1 lg:col-span-4">
           <div className="mx-auto flex aspect-square w-full max-w-[350px] items-center justify-center rounded-lg bg-gray-100 p-4">
             <EditableImage
-              initialSrc="/images/icone_tout_public.webp"
+              src="/images/icone_tout_public.webp"
               alt="Tout public"
               contentId="process-image"
               className="size-full object-contain"

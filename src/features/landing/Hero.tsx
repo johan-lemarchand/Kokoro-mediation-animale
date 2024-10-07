@@ -43,7 +43,7 @@ export const Hero = () => {
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="flex flex-1 flex-col items-center gap-4 text-center lg:gap-6 xl:gap-8">
           <EditableImage
-            initialSrc="/images/logo-compressé.webp"
+            src="/images/logo-compressé.webp"
             alt="Logo Kokoro Médiation Animale"
             width={200}
             height={250}
@@ -135,7 +135,7 @@ export const Hero = () => {
               </li>
             </ul>
             <EditableImage
-              initialSrc="/images/triangle_MA.webp"
+              src="/images/triangle_MA.webp"
               alt="Triangle de médiation animale"
               width={300}
               height={300}
