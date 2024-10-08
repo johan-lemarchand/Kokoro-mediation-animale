@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
+import { redis } from '@/lib/redis';
 
 export async function POST(request: Request) {
   const body = await request.json();
@@ -15,23 +16,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'id ou contentIds manquant ou invalide' }, { status: 400 });
   }
 
-  try {
+  const contentMap: { [key: string]: string } = {};
+
+  for (const contentId of idsToFetch) {
+    const cachedContent = await redis.get(`content:${contentId}`);
+    if (cachedContent) {
+      contentMap[contentId] = cachedContent as string;
+    }
+  }
+
+  // Récupérer les contenus non mis en cache depuis la base de données
+  const missingIds = idsToFetch.filter(id => !contentMap[id]);
+
+  if (missingIds.length > 0) {
     const contents = await prisma.editableContent.findMany({
       where: {
         id: {
-          in: idsToFetch,
+          in: missingIds,
         },
       },
     });
 
-    const contentMap = contents.reduce((acc: { [key: string]: string }, content) => {
-      acc[content.id] = content.content;
-      return acc;
-    }, {});
-
-    return NextResponse.json(contentMap);
-  } catch (error) {
-    console.error('Erreur lors de la récupération du contenu:', error);
-    return NextResponse.json({ error: 'Erreur lors de la récupération du contenu' }, { status: 500 });
+    for (const content of contents) {
+      contentMap[content.id] = content.content;
+      await redis.set(`content:${content.id}`, content.content, { ex: 3600 });
+    }
   }
+
+  return NextResponse.json(contentMap);
 }

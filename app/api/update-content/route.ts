@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { requiredAuth } from "@/lib/auth/helper";
 import { prisma } from "@/lib/prisma";
+import { redis } from '@/lib/redis';
 
 export async function POST(request: Request) {
   try {
@@ -17,6 +18,8 @@ export async function POST(request: Request) {
       update: { content },
       create: { id, type, content },
     });
+
+    await redis.set(`content:${content.id}`, content.content, { ex: 3600 });
 
     return NextResponse.json(updatedContent);
   } catch (error) {
