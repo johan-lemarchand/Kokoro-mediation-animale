@@ -153,6 +153,7 @@ export const Hero = () => {
               alt="Triangle de médiation animale"
               contentId="hero-triangle"
               priority={true}
+              className="h-[200px] w-[350px] object-contain lg:block"
               onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/triangle_MA.webp") : noop}
             />
           </div>
