@@ -16,11 +16,11 @@ export function TeamGridSection() {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
+    handleCancel,
     getContent,
     currentContentId,
   } = useEditableContentManager(contentIds);
@@ -64,7 +64,7 @@ export function TeamGridSection() {
       </BentoGrid>
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}

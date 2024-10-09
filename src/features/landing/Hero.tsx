@@ -31,12 +31,12 @@ export const Hero = () => {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
     getContent,
+    handleCancel,
     currentContentId,
   } = useEditableContentManager(contentIds);
 
@@ -166,7 +166,7 @@ export const Hero = () => {
       <AccordionList />
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerType === "image" ? (drawerContent as string) : drawerContent}
         onSave={handleSave}
         type={drawerType}

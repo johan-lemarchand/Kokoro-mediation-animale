@@ -19,25 +19,28 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type, content
 
   useEffect(() => {
     if (isOpen) {
-      setNewContent(content);
-      setImagePreview(content);
+      console.log("Drawer opened with content:", content);
+      setNewContent(content || '');
+      setImagePreview(content || '');
     }
-  }, [isOpen, content]);
+  }, [isOpen, content, type]);
+
+  const isValidImageSrc = (src: string) => {
+    return typeof src === 'string' && (src.startsWith('/') || src.startsWith('http') || src.startsWith('data:image/'));
+  };
 
   const handleSave = async () => {
     try {
       if (type === "image") {
+        if (!isValidImageSrc(imagePreview)) {
+          throw new Error("Source d'image invalide");
+        }
         const formData = new FormData();
         const response = await fetch(imagePreview);
         const blob = await response.blob();
         formData.append('file', blob, 'image.jpg');
         formData.append('type', 'image');
         formData.append('id', contentId);
-
-        console.log('FormData envoyé:', 
-          Array.from(formData.entries()).reduce((obj, [key, value]) => 
-            ({ ...obj, [key]: value instanceof Blob ? `Blob (${value.size} bytes)` : value }), {})
-        );
 
         onSave(contentId, formData);
       } else {
@@ -52,10 +55,9 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type, content
       });
       onClose();
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde:", error);
       toast({
         title: "Erreur",
-        description: "Erreur lors de la sauvegarde. Veuillez réessayer.",
+        description: error instanceof Error ? error.message : "Erreur lors de la sauvegarde. Veuillez réessayer.",
         variant: "destructive",
         duration: 5000,
       });
@@ -67,7 +69,17 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type, content
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        const result = reader.result as string;
+        if (isValidImageSrc(result)) {
+          setImagePreview(result);
+        } else {
+          toast({
+            title: "Erreur",
+            description: "Format d'image non valide",
+            variant: "destructive",
+            duration: 5000,
+          });
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -85,13 +97,19 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type, content
           <div className="mb-4 mt-2">
             {type === "text" ? (
               <textarea
-                value={newContent}
+                value={newContent || ''}
                 onChange={(e) => setNewContent(e.target.value)}
                 className="h-40 w-full rounded border p-2"
               />
             ) : (
               <div className="flex flex-col items-center">
-                <Image src={imagePreview} alt="Image actuelle" width={200} height={200} className="mb-4" />
+                {isValidImageSrc(imagePreview) ? (
+                  <Image src={imagePreview} alt="Image actuelle" width={200} height={200} className="mb-4" />
+                ) : (
+                  <div className="mb-4 flex size-[200px] items-center justify-center bg-gray-200 text-gray-500">
+                    Image invalide ou non chargée
+                  </div>
+                )}
                 <input
                   type="file"
                   accept="image/*"

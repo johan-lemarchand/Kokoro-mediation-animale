@@ -21,11 +21,11 @@ export const DiplomaSection = () => {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
+    handleCancel,
     getContent,
     currentContentId,
   } = useEditableContentManager(contentIds);
@@ -103,7 +103,7 @@ export const DiplomaSection = () => {
       </div>
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}

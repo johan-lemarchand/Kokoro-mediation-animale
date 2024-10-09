@@ -2,10 +2,12 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useEditableContent } from '@/contexts/EditableContentContext';
 import { useToast } from '@/components/ui/use-toast';
 
+type DrawerType = "text" | "image";
+
 export function useEditableContentManager(initialContentIds: string[]) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerContent, setDrawerContent] = useState("");
-  const [drawerType, setDrawerType] = useState<"text" | "image">("text");
+  const [drawerType, setDrawerType] = useState<DrawerType>("text");
   const [currentContentId, setCurrentContentId] = useState("");
   const { content, setContent, getContent } = useEditableContent();
   const [isInitialContentLoaded, setIsInitialContentLoaded] = useState(false);
@@ -39,11 +41,25 @@ export function useEditableContentManager(initialContentIds: string[]) {
     fetchInitialContent();
   }, [fetchInitialContent]);
 
-  const handleOpenDrawer = (type: "text" | "image", contentId: string, content: string) => {
+  const handleOpenDrawer = (type: DrawerType, contentId: string, content: string) => {
     setDrawerType(type);
-    setDrawerContent(content);
     setCurrentContentId(contentId);
+    
+    // Utilisez getContent pour obtenir le contenu le plus récent
+    const currentContent = getContent(contentId) || content;
+    setDrawerContent(currentContent);
+    
     setIsDrawerOpen(true);
+  };
+
+  const resetDrawerState = () => {
+    setIsDrawerOpen(false);
+    setDrawerContent("");
+    setCurrentContentId("");
+  };
+
+  const handleCancel = () => {
+    resetDrawerState();
   };
 
   const handleSave = async (contentId: string, newContent: string | FormData) => {
@@ -91,12 +107,12 @@ export function useEditableContentManager(initialContentIds: string[]) {
 
   return {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
     getContent,
     currentContentId,
+    handleCancel,
   };
 }

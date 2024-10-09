@@ -48,13 +48,13 @@ export function ProcessSection() {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
     getContent,
     currentContentId,
+    handleCancel,
   } = useEditableContentManager(contentIds);
 
   const noop = () => {};
@@ -133,13 +133,13 @@ export function ProcessSection() {
             initialText={getContent("process-team-description") || "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent."}
             contentId="process-team-description"
             variant="p"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-team-description") || "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent.") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénficiaire et le référent.") : noop}
           />
         </div>
       </div>
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}
