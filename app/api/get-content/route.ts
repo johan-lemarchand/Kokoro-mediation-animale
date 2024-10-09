@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from "@/lib/prisma";
-import { redis } from '@/lib/redis';
 
 export async function POST(request: Request) {
   const body = await request.json();
   const { id, contentIds } = body;
+
+  console.log("Requête reçue:", { id, contentIds });
 
   let idsToFetch: string[];
 
@@ -13,35 +14,33 @@ export async function POST(request: Request) {
   } else if (contentIds && Array.isArray(contentIds)) {
     idsToFetch = contentIds;
   } else {
+    console.log("Erreur: id ou contentIds manquant ou invalide");
     return NextResponse.json({ error: 'id ou contentIds manquant ou invalide' }, { status: 400 });
   }
 
-  const contentMap: { [key: string]: string } = {};
+  console.log("IDs à récupérer:", idsToFetch);
 
-  for (const contentId of idsToFetch) {
-    const cachedContent = await redis.get(`content:${contentId}`);
-    if (cachedContent) {
-      contentMap[contentId] = cachedContent as string;
-    }
-  }
-
-  // Récupérer les contenus non mis en cache depuis la base de données
-  const missingIds = idsToFetch.filter(id => !contentMap[id]);
-
-  if (missingIds.length > 0) {
+  try {
     const contents = await prisma.editableContent.findMany({
       where: {
         id: {
-          in: missingIds,
+          in: idsToFetch,
         },
       },
     });
 
-    for (const content of contents) {
-      contentMap[content.id] = content.content;
-      await redis.set(`content:${content.id}`, content.content, { ex: 3600 });
-    }
-  }
+    console.log("Contenu récupéré de la base de données:", contents);
 
-  return NextResponse.json(contentMap);
+    const contentMap = contents.reduce((acc: { [key: string]: string }, content) => {
+      acc[content.id] = content.content;
+      return acc;
+    }, {});
+
+    console.log("Contenu mappé à renvoyer:", contentMap);
+
+    return NextResponse.json(contentMap);
+  } catch (error) {
+    console.error('Erreur lors de la récupération du contenu:', error);
+    return NextResponse.json({ error: 'Erreur lors de la récupération du contenu' }, { status: 500 });
+  }
 }

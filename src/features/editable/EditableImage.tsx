@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useEditableContent } from "@/contexts/EditableContentContext";
+import { supabase } from '@/lib/supabase';
 
 interface EditableImageProps {
   src: string;
@@ -34,45 +35,65 @@ const toBase64 = (str: string) =>
     : window.btoa(str)
 
 export const EditableImage = ({
-                                src,
-                                alt,
-                                width,
-                                height,
-                                contentId,
-                                className = "",
-                                objectFit = "cover",
-                                priority = false,
-                                onEdit
-                              }: EditableImageProps) => {
-  const { getContent } = useEditableContent();
-  const [imageSrc, setImageSrc] = useState(src);
-  const [imageError, setImageError] = useState(false);
+    src,
+    alt,
+    width,
+    height,
+    contentId,
+    className = "",
+    objectFit = "cover",
+    priority = false,
+    onEdit
+  }: EditableImageProps) => {
+    const { getContent } = useEditableContent();
+    const [imageSrc, setImageSrc] = useState(src);
+    const [imageError, setImageError] = useState(false);
 
-  useEffect(() => {
-    setImageSrc(getContent(contentId) || src);
-  }, [contentId, getContent, src]);
+    useEffect(() => {
+      const fetchImage = async () => {
+        const content = getContent(contentId) || src;
+        if (content.startsWith('images/')) {
+          const { data } = supabase.storage.from('kokoro').getPublicUrl(content);
+          setImageSrc(data?.publicUrl || src);
+        } else {
+          setImageSrc(content);
+        }
+      };
 
-  return (
-    <div onClick={() => onEdit(contentId)} className={`relative ${className}`} style={{ width, height }}>
-      <Image
-        src={imageSrc}
-        alt={alt}
-        fill={width === undefined || height === undefined}
-        width={typeof width === 'number' ? width : undefined}
-        height={typeof height === 'number' ? height : undefined}
-        style={{ objectFit }}
-        priority={priority}
-        placeholder="blur"
-        blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        loading={priority ? "eager" : "lazy"}
-        onError={() => setImageError(true)}
-      />
-      {imageError && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500">
-          Image non disponible
+      fetchImage();
+    }, [contentId, getContent, src]);
+
+    const isValidSrc = typeof imageSrc === 'string' && (imageSrc.startsWith('/') || imageSrc.startsWith('http'));
+
+    if (!isValidSrc) {
+      return (
+        <div onClick={() => onEdit(contentId)} className={`relative ${className} flex items-center justify-center bg-gray-200 text-gray-500`} style={{ width, height }}>
+          Image invalide
         </div>
-      )}
-    </div>
-  );
+      );
+    }
+
+    return (
+      <div onClick={() => onEdit(contentId)} className={`relative ${className}`} style={{ width, height }}>
+        <Image
+          src={imageSrc}
+          alt={alt}
+          fill={width === undefined || height === undefined}
+          width={typeof width === 'number' ? width : undefined}
+          height={typeof height === 'number' ? height : undefined}
+          style={{ objectFit }}
+          priority={priority}
+          placeholder="blur"
+          blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(700, 475))}`}
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          loading={priority ? "eager" : "lazy"}
+          onError={() => setImageError(true)}
+        />
+        {imageError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-200 text-gray-500">
+            Image non disponible
+          </div>
+        )}
+      </div>
+    );
 };

@@ -21,11 +21,13 @@ export function ContactSection() {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
+    handleCancel,
+    getContent,
+    currentContentId,
   } = useEditableContentManager(contentIds);
 
   // Fonction vide pour désactiver l'édition
@@ -38,40 +40,40 @@ export function ContactSection() {
           <div className="mx-auto flex aspect-square w-full max-w-[350px] items-center justify-center rounded-lg bg-gray-100 p-4">
             <figure className="relative m-0 size-full">
               <EditableImage
-                src="/images/carte-bas-rhin-departement-618x601.webp"
+                src={getContent("contact-map-image") || "/images/carte-bas-rhin-departement-618x601.webp"}
                 alt="Carte bas Rhin"
                 contentId="contact-map-image"
                 className="size-full"
                 objectFit="contain"
-                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/carte-bas-rhin-departement-618x601.webp") : noop}
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent("contact-map-image") || "/images/carte-bas-rhin-departement-618x601.webp") : noop}
               />
             </figure>
           </div>
         </div>
         <div className="lg:col-span-7">
           <EditableText
-            initialText="Lieu d'intervention"
+            initialText={getContent("contact-intervention-title") || "Lieu d'intervention"}
             contentId="contact-intervention-title"
             variant="h2"
             className="mb-3 text-3xl font-bold text-primary"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Lieu d'intervention") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("contact-intervention-title") || "Lieu d'intervention") : noop}
           />
           <div className="mt-4 text-lg">
             <EditableText
-              initialText="J'interviens en itinérance dans le Bas-Rhin.<br />Pour plus de renseignements ou un devis, n'hésitez pas à me contacter par téléphone ou par mail.<br /><br /><span class='font-bold'>Louise BURG</span>"
+              initialText={getContent("contact-intervention-description") || "J'interviens en itinérance dans le Bas-Rhin.<br />Pour plus de renseignements ou un devis, n'hésitez pas à me contacter par téléphone ou par mail.<br /><br /><span class='font-bold'>Louise BURG</span>"}
               contentId="contact-intervention-description"
               variant="p"
               renderHTML={true}
               className="mt-4 text-lg"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "J'interviens en itinérance dans le Bas-Rhin.<br />Pour plus de renseignements ou un devis, n'hésitez pas à me contacter par téléphone ou par mail.<br /><br /><span class='font-bold'>Louise BURG</span>") : noop}
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("contact-intervention-description") || "J'interviens en itinérance dans le Bas-Rhin.<br />Pour plus de renseignements ou un devis, n'hésitez pas à me contacter par téléphone ou par mail.<br /><br /><span class='font-bold'>Louise BURG</span>") : noop}
             />
           </div>
           <EditableText
-            initialText="Mes informations"
+            initialText={getContent("contact-info-title") || "Mes informations"}
             contentId="contact-info-title"
             variant="h2"
             className="mb-3 mt-6 text-3xl font-bold text-primary"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Mes informations") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("contact-info-title") || "Mes informations") : noop}
           />
           <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <ContactCard
@@ -97,10 +99,11 @@ export function ContactSection() {
       </div>
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}
+        contentId={currentContentId}
       />
     </main>
   );

@@ -79,11 +79,13 @@ export default function AccordionList() {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
+    handleCancel,
+    getContent,
+    currentContentId,
   } = useEditableContentManager(contentIds);
 
   const noop = () => {};
@@ -102,19 +104,19 @@ export default function AccordionList() {
                 <AccordionItem value={item.no}>
                   <AccordionTrigger className="justify-start">
                     <EditableText
-                      initialText={item.heading}
+                      initialText={getContent(item.headingId) || item.heading}
                       contentId={item.headingId}
                       variant="p"
                       className="w-full text-left"
-                      onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.heading) : noop}
+                      onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(item.headingId) || item.heading) : noop}
                     />
                   </AccordionTrigger>
                   <AccordionContent>
                     <EditableText
-                      initialText={item.body}
+                      initialText={getContent(item.bodyId) || item.body}
                       contentId={item.bodyId}
                       variant="p"
-                      onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.body) : noop}
+                      onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(item.bodyId) || item.body) : noop}
                     />
                   </AccordionContent>
                 </AccordionItem>
@@ -125,10 +127,11 @@ export default function AccordionList() {
       </div>
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}
+        contentId={currentContentId}
       />
     </div>
   );

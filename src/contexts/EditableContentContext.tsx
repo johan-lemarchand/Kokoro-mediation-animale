@@ -1,26 +1,29 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 
+type ContentType = { [key: string]: string };
+
 interface EditableContentContextProps {
-  content: { [key: string]: string };
-  setContent: (id: string, newContent: string) => void;
+  content: ContentType;
+  setContent: (contentIdOrUpdater: string | ((prev: ContentType) => ContentType), newContent?: string) => void;
   getContent: (id: string) => string;
 }
 
 const EditableContentContext = createContext<EditableContentContextProps | undefined>(undefined);
 
 export const EditableContentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [content, setContentState] = useState<{ [key: string]: string }>({});
+  const [content, setContentState] = useState<ContentType>({});
 
-  const setContent = useCallback((contentId: string, newContent: string) => {
-    setContentState(prevContent => ({
-      ...prevContent,
-      [contentId]: newContent
-    }));
+  const setContent = useCallback((contentIdOrUpdater: string | ((prev: ContentType) => ContentType), newContent?: string) => {
+    if (typeof contentIdOrUpdater === 'function') {
+      setContentState(contentIdOrUpdater);
+    } else if (typeof newContent === 'string') {
+      setContentState(prev => ({ ...prev, [contentIdOrUpdater]: newContent }));
+    }
   }, []);
 
-  const getContent = (id: string) => {
+  const getContent = useCallback((id: string) => {
     return content[id] || '';
-  };
+  }, [content]);
 
   return (
     <EditableContentContext.Provider value={{ content, setContent, getContent }}>

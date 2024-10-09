@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { EditableControls } from "./EditableControls";
@@ -6,28 +6,47 @@ import { EditableControls } from "./EditableControls";
 interface EditableDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  content: string | ReactNode;
-  onSave: (newContent: string) => void;
+  content: string;
+  onSave: (contentId: string, newContent: string | FormData) => void;
   type: "text" | "image";
+  contentId: string;
 }
 
-export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: EditableDrawerProps) => {
-  const [newContent, setNewContent] = useState<string>(typeof content === "string" ? content : "");
-  const [imagePreview, setImagePreview] = useState<string>(typeof content === "string" ? content : "");
+export const EditableDrawer = ({ isOpen, onClose, content, onSave, type, contentId }: EditableDrawerProps) => {
+  const [newContent, setNewContent] = useState<string>(content);
+  const [imagePreview, setImagePreview] = useState<string>(content);
   const { toast } = useToast();
 
   useEffect(() => {
     if (isOpen) {
-      if (typeof content === "string") {
-        setNewContent(content);
-        setImagePreview(content);
-      }
+      console.log("Drawer opened with content:", content);
+      setNewContent(content || '');
+      setImagePreview(content || '');
     }
-  }, [isOpen, content]);
+  }, [isOpen, content, type]);
+
+  const isValidImageSrc = (src: string) => {
+    return typeof src === 'string' && (src.startsWith('/') || src.startsWith('http') || src.startsWith('data:image/'));
+  };
 
   const handleSave = async () => {
     try {
-      await onSave(newContent);
+      if (type === "image") {
+        if (!isValidImageSrc(imagePreview)) {
+          throw new Error("Source d'image invalide");
+        }
+        const formData = new FormData();
+        const response = await fetch(imagePreview);
+        const blob = await response.blob();
+        formData.append('file', blob, 'image.jpg');
+        formData.append('type', 'image');
+        formData.append('id', contentId);
+
+        onSave(contentId, formData);
+      } else {
+        onSave(contentId, newContent);
+      }
+
       toast({
         title: "Succès",
         description: "Modifications enregistrées avec succès",
@@ -36,10 +55,9 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: Edita
       });
       onClose();
     } catch (error) {
-      console.error("Erreur lors de la sauvegarde:", error);
       toast({
         title: "Erreur",
-        description: "Erreur lors de la sauvegarde. Veuillez réessayer.",
+        description: error instanceof Error ? error.message : "Erreur lors de la sauvegarde. Veuillez réessayer.",
         variant: "destructive",
         duration: 5000,
       });
@@ -51,8 +69,17 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: Edita
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-        setNewContent(reader.result as string);
+        const result = reader.result as string;
+        if (isValidImageSrc(result)) {
+          setImagePreview(result);
+        } else {
+          toast({
+            title: "Erreur",
+            description: "Format d'image non valide",
+            variant: "destructive",
+            duration: 5000,
+          });
+        }
       };
       reader.readAsDataURL(file);
     }
@@ -70,13 +97,19 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: Edita
           <div className="mb-4 mt-2">
             {type === "text" ? (
               <textarea
-                value={newContent}
+                value={newContent || ''}
                 onChange={(e) => setNewContent(e.target.value)}
                 className="h-40 w-full rounded border p-2"
               />
             ) : (
               <div className="flex flex-col items-center">
-                <Image src={imagePreview} alt="Image actuelle" width={200} height={200} className="mb-4" />
+                {isValidImageSrc(imagePreview) ? (
+                  <Image src={imagePreview} alt="Image actuelle" width={200} height={200} className="mb-4" />
+                ) : (
+                  <div className="mb-4 flex size-[200px] items-center justify-center bg-gray-200 text-gray-500">
+                    Image invalide ou non chargée
+                  </div>
+                )}
                 <input
                   type="file"
                   accept="image/*"

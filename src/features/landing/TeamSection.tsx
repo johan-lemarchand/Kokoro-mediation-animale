@@ -16,11 +16,13 @@ export function TeamGridSection() {
 
   const {
     isDrawerOpen,
-    setIsDrawerOpen,
     drawerContent,
     drawerType,
     handleOpenDrawer,
     handleSave,
+    handleCancel,
+    getContent,
+    currentContentId,
   } = useEditableContentManager(contentIds);
 
   const noop = () => {};
@@ -33,28 +35,28 @@ export function TeamGridSection() {
             key={item.id}
             title={
               <EditableText
-                initialText={item.name}
+                initialText={getContent(item.nameId) || item.name}
                 contentId={item.nameId}
                 variant="h3"
-                onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.name) : noop}
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(item.nameId) || item.name) : noop}
               />
             }
             description={
               <EditableText
-                initialText={item.description}
+                initialText={getContent(item.descriptionId) || item.description}
                 contentId={item.descriptionId}
                 variant="p"
-                onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.description) : noop}
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(item.descriptionId) || item.description) : noop}
               />
             }
             image={
               <EditableImage
-                src={item.image}
+                src={getContent(item.imageId) || item.image}
                 alt={item.name}
                 contentId={item.imageId}
                 className="size-full"
                 objectFit="cover"
-                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, item.image) : noop}
+                onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent(item.imageId) || item.image) : noop}
               />
             }
           />
@@ -62,10 +64,11 @@ export function TeamGridSection() {
       </BentoGrid>
       <EditableDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onClose={handleCancel}
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}
+        contentId={currentContentId}
       />
     </SectionLayout>
   );
