@@ -7,7 +7,7 @@ import { useEffect } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import SocialLinks from "@/features/social/SocialLinks";
-import { Mails } from "lucide-react";
+import { Mails, Images, Home } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { EditableImage } from "@/features/editable/EditableImage";
 
@@ -47,7 +47,7 @@ function useBoundedScroll(threshold: number) {
   return { scrollYBounded, scrollYBoundedProgress };
 }
 
-export function LandingHeader() {
+export function LandingHeader({ isGalleryPage = false }) {
   const { scrollYBoundedProgress } = useBoundedScroll(400);
   const scrollYBoundedProgressDelayed = useTransform(
     scrollYBoundedProgress,
@@ -117,6 +117,29 @@ export function LandingHeader() {
         >
           {session?.user?.name && (
             <span className="mr-4">Bonjour {session.user.name}</span>
+          )}
+          {!isGalleryPage ? (
+            <Link
+              href="/galerie"
+              className={buttonVariants({
+                variant: "link",
+                className: "mt-2",
+              })}
+            >
+              <Images size={20} className="mr-2" />
+              Galerie d'images
+            </Link>
+          ) : (
+            <Link
+              href="/"
+              className={buttonVariants({
+                variant: "link",
+                className: "mt-2",
+              })}
+            >
+              <Home size={20} className="mr-2" />
+              Accueil
+            </Link>
           )}
           <Link
             href="#contact"
