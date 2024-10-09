@@ -15,6 +15,7 @@ export function HeaderBase({ children }: PropsWithChildren) {
             alt="app logo"
             width={32}
             height={32}
+            loading="lazy"
           />
           <Link href="/" className="text-base font-bold">
             {SiteConfig.title}

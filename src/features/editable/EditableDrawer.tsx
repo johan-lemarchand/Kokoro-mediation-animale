@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { EditableControls } from "./EditableControls";
@@ -6,28 +6,44 @@ import { EditableControls } from "./EditableControls";
 interface EditableDrawerProps {
   isOpen: boolean;
   onClose: () => void;
-  content: string | ReactNode;
-  onSave: (newContent: string) => void;
+  content: string;
+  onSave: (contentId: string, newContent: string | FormData) => void;
   type: "text" | "image";
+  contentId: string;
 }
 
-export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: EditableDrawerProps) => {
-  const [newContent, setNewContent] = useState<string>(typeof content === "string" ? content : "");
-  const [imagePreview, setImagePreview] = useState<string>(typeof content === "string" ? content : "");
+export const EditableDrawer = ({ isOpen, onClose, content, onSave, type, contentId }: EditableDrawerProps) => {
+  const [newContent, setNewContent] = useState<string>(content);
+  const [imagePreview, setImagePreview] = useState<string>(content);
   const { toast } = useToast();
 
   useEffect(() => {
     if (isOpen) {
-      if (typeof content === "string") {
-        setNewContent(content);
-        setImagePreview(content);
-      }
+      setNewContent(content);
+      setImagePreview(content);
     }
   }, [isOpen, content]);
 
   const handleSave = async () => {
     try {
-      await onSave(newContent);
+      if (type === "image") {
+        const formData = new FormData();
+        const response = await fetch(imagePreview);
+        const blob = await response.blob();
+        formData.append('file', blob, 'image.jpg');
+        formData.append('type', 'image');
+        formData.append('id', contentId);
+
+        console.log('FormData envoyé:', 
+          Array.from(formData.entries()).reduce((obj, [key, value]) => 
+            ({ ...obj, [key]: value instanceof Blob ? `Blob (${value.size} bytes)` : value }), {})
+        );
+
+        onSave(contentId, formData);
+      } else {
+        onSave(contentId, newContent);
+      }
+
       toast({
         title: "Succès",
         description: "Modifications enregistrées avec succès",
@@ -52,7 +68,6 @@ export const EditableDrawer = ({ isOpen, onClose, content, onSave, type }: Edita
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result as string);
-        setNewContent(reader.result as string);
       };
       reader.readAsDataURL(file);
     }

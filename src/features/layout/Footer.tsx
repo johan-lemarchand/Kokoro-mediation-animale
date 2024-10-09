@@ -29,6 +29,7 @@ export const Footer = () => {
                 width={100}
                 height={100}
                 className="size-24"
+                loading="lazy"
               />
               <div className="space-y-1">
                 <Typography variant="h3">{SiteConfig.title}</Typography>

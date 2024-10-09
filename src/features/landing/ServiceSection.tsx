@@ -32,6 +32,8 @@ export function ServiceSection() {
     drawerType,
     handleOpenDrawer,
     handleSave,
+    getContent,
+    currentContentId,
   } = useEditableContentManager(contentIds);
 
   const noop = () => {};
@@ -41,18 +43,18 @@ export function ServiceSection() {
       <div className="container mx-auto">
         <div className="mb-12 text-center">
           <EditableText
-            initialText="Mes prestations"
+            initialText={getContent("service-section-title") || "Mes prestations"}
             contentId="service-section-title"
             variant="h2"
             className="md:text-3l mb-4 text-2xl font-bold sm:text-2xl lg:text-3xl"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Mes prestations") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("service-section-title") || "Mes prestations") : noop}
           />
           <EditableText
-            initialText="Le service que j'offre est spécialement conçu pour répondre à vos besoins."
+            initialText={getContent("service-section-subtitle") || "Le service que j'offre est spécialement conçu pour répondre à vos besoins."}
             contentId="service-section-subtitle"
             variant="p"
             className="text-lg"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Le service que j'offre est spécialement conçu pour répondre à vos besoins.") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("service-section-subtitle") || "Le service que j'offre est spécialement conçu pour répondre à vos besoins.") : noop}
           />
         </div>
 
@@ -63,28 +65,28 @@ export function ServiceSection() {
               Icon={item.icon}
               title={
                 <EditableText
-                  initialText={item.title}
+                  initialText={getContent(`service-title-${item.id}`) || item.title}
                   contentId={`service-title-${item.id}`}
                   variant="h3"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.title) : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(`service-title-${item.id}`) || item.title) : noop}
                 />
               }
               description={
                 <EditableText
-                  initialText={item.description}
+                  initialText={getContent(`service-description-${item.id}`) || item.description}
                   contentId={`service-description-${item.id}`}
                   variant="p"
                   renderHTML={true}
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.description) : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(`service-description-${item.id}`) || item.description) : noop}
                 />
               }
               learnMore={
                 <EditableText
-                  initialText={item.learnMore}
+                  initialText={getContent(`service-learnMore-${item.id}`) || item.learnMore}
                   contentId={`service-learnMore-${item.id}`}
                   variant="p"
                   renderHTML={true}
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.learnMore) : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(`service-learnMore-${item.id}`) || item.learnMore) : noop}
                 />
               }
               linkType={item.linkType}
@@ -98,6 +100,7 @@ export function ServiceSection() {
         content={drawerContent}
         onSave={handleSave}
         type={drawerType}
+        contentId={currentContentId}
       />
     </SectionLayout>
   );

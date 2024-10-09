@@ -53,9 +53,10 @@ export function ProcessSection() {
     drawerType,
     handleOpenDrawer,
     handleSave,
+    getContent,
+    currentContentId,
   } = useEditableContentManager(contentIds);
 
-  // Fonction vide pour désactiver l'édition
   const noop = () => {};
 
   return (
@@ -64,27 +65,27 @@ export function ProcessSection() {
         <div className="relative lg:order-1 lg:col-span-4">
           <div className="mx-auto flex aspect-square w-full max-w-[150px] items-center justify-center rounded-lg bg-gray-100 p-2 sm:max-w-[200px] sm:p-3 md:max-w-[250px] md:p-4 lg:max-w-[300px]">
             <EditableImage
-              src="/images/icone_tout_public.webp"
+              src={getContent("process-image") || "/images/icone_tout_public.webp"}
               alt="Tout public"
               contentId="process-image"
               className="size-full object-contain"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/icone_tout_public.webp") : noop}
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent("process-image") || "/images/icone_tout_public.webp") : noop}
             />
           </div>
         </div>
         <div className="lg:order-2 lg:col-span-7 xl:col-span-7 xl:col-start-6">
           <EditableText
-            initialText="Les objectifs"
+            initialText={getContent("process-title") || "Les objectifs"}
             contentId="process-title"
             variant="h2"
             className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Les objectifs") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-title") || "Les objectifs") : noop}
           />
           <EditableText
-            initialText="Les objectifs sont adaptés à chaque personne en fonction de ses besoins et de ses capacités. Les différentes activités proposées permettront de travailler tout autant le physique que le psychique comme par exemple la motricité, la coordination, mais en même temps l'attention, l'apaisement."
+            initialText={getContent("process-description") || "Les objectifs sont adaptés à chaque personne en fonction de ses besoins et de ses capacités. Les différentes activités proposées permettront de travailler tout autant le physique que le psychique comme par exemple la motricité, la coordination, mais en même temps l'attention, l'apaisement."}
             contentId="process-description"
             variant="p"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Les objectifs sont adaptés à chaque personne en fonction de ses besoins et de ses capacités. Les différentes activités proposées permettront de travailler tout autant le physique que le psychique comme par exemple la motricité, la coordination, mais en même temps l'attention, l'apaisement.") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-description") || "Les objectifs sont adaptés à chaque personne en fonction de ses besoins et de ses capacités. Les différentes activités proposées permettront de travailler tout autant le physique que le psychique comme par exemple la motricité, la coordination, mais en même temps l'attention, l'apaisement.") : noop}
           />
           {objectifList.map((item) => (
             <div
@@ -95,7 +96,7 @@ export function ProcessSection() {
                 <Icons name={item.icon} className="size-8 text-primary" />
               </div>
               <EditableText
-                initialText={item.text}
+                initialText={getContent(item.contentId) || item.text}
                 contentId={item.contentId}
                 variant="p"
                 onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, item.text) : noop}
@@ -107,41 +108,42 @@ export function ProcessSection() {
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10">
         <div className="md:mt-0">
           <EditableText
-            initialText="Pour qui ?"
+            initialText={getContent("process-for-who-title") || "Pour qui ?"}
             contentId="process-for-who-title"
             variant="h2"
             className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Pour qui ?") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-for-who-title") || "Pour qui ?") : noop}
           />
           <EditableText
-            initialText="Tout public ! J'interviens chez des particuliers ou en établissements auprès d'enfants, adolescents, adultes, séniors, personnes en situation de handicap, en soins palliatifs…"
+            initialText={getContent("process-for-who-description") || "Tout public ! J'interviens chez des particuliers ou en établissements auprès d'enfants, adolescents, adultes, séniors, personnes en situation de handicap, en soins palliatifs…"}
             contentId="process-for-who-description"
             variant="p"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Tout public ! J'interviens chez des particuliers ou en établissements auprès d'enfants, adolescents, adultes, séniors, personnes en situation de handicap, en soins palliatifs…") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-for-who-description") || "Tout public ! J'interviens chez des particuliers ou en établissements auprès d'enfants, adolescents, adultes, séniors, personnes en situation de handicap, en soins palliatifs…") : noop}
           />
         </div>
         <div className="md:mt-32">
           <EditableText
-            initialText="L'équipe de médiation"
+            initialText={getContent("process-team-title") || "L'équipe de médiation"}
             contentId="process-team-title"
             variant="h2"
             className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "L'équipe de médiation") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-team-title") || "L'équipe de médiation") : noop}
           />
           <EditableText
-            initialText="Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent."
+            initialText={getContent("process-team-description") || "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent."}
             contentId="process-team-description"
             variant="p"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bén��ficiaire et le référent.") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("process-team-description") || "Le choix de l'animal est effectué en fonction des objectifs recherchés pour la séance. Ce choix s'effectue avec le bénéficiaire et le référent.") : noop}
           />
         </div>
       </div>
       <EditableDrawer
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        content={drawerType === "image" ? (drawerContent as string) : drawerContent}
+        content={drawerContent}
         onSave={handleSave}
         type={drawerType}
+        contentId={currentContentId}
       />
     </main>
   );

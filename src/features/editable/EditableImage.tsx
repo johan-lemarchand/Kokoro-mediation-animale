@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { useEditableContent } from "@/contexts/EditableContentContext";
+import { supabase } from '@/lib/supabase';
 
 interface EditableImageProps {
   src: string;
@@ -34,22 +35,32 @@ const toBase64 = (str: string) =>
     : window.btoa(str)
 
 export const EditableImage = ({
-                                src,
-                                alt,
-                                width,
-                                height,
-                                contentId,
-                                className = "",
-                                objectFit = "cover",
-                                priority = false,
-                                onEdit
-                              }: EditableImageProps) => {
+    src,
+    alt,
+    width,
+    height,
+    contentId,
+    className = "",
+    objectFit = "cover",
+    priority = false,
+    onEdit
+  }: EditableImageProps) => {
   const { getContent } = useEditableContent();
   const [imageSrc, setImageSrc] = useState(src);
   const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
-    setImageSrc(getContent(contentId) || src);
+    const fetchImage = async () => {
+      const content = getContent(contentId) || src;
+      if (content.startsWith('images/')) {
+        const { data } = supabase.storage.from('kokoro').getPublicUrl(content);
+        setImageSrc(data?.publicUrl || src);
+      } else {
+        setImageSrc(content);
+      }
+    };
+
+    fetchImage();
   }, [contentId, getContent, src]);
 
   return (

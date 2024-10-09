@@ -14,7 +14,9 @@ export const Hero = () => {
   const contentIds = [
     "hero-logo",
     "hero-title",
-    "hero-description",
+    "hero-description-1",
+    "hero-description-2",
+    "hero-description-3",
     "hero-triadique-description",
     "hero-animal-mediateur-title",
     "hero-animal-mediateur-description",
@@ -34,6 +36,8 @@ export const Hero = () => {
     drawerType,
     handleOpenDrawer,
     handleSave,
+    getContent,
+    currentContentId,
   } = useEditableContentManager(contentIds);
 
   const noop = () => {};
@@ -43,118 +47,118 @@ export const Hero = () => {
       <div className="flex flex-col gap-8 lg:flex-row">
         <div className="flex flex-1 flex-col items-center gap-4 text-center lg:gap-6 xl:gap-8">
           <EditableImage
-            src="/images/logo-compressé.webp"
+            src={getContent("hero-logo") || "/images/logo-compressé.webp"}
             alt="Logo Kokoro Médiation Animale"
             contentId="hero-logo"
             priority={true}
             className="hidden h-[250px] w-[200px] object-contain lg:block"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/logo-compressé.webp") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent("hero-logo") || "/images/logo-compressé.webp") : noop}
           />
           <EditableText
-            initialText="Qu'est-ce que la médiation par l'animal ?"
+            initialText={getContent("hero-title") || "Qu'est-ce que la médiation par l'animal ?"}
             contentId="hero-title"
             variant="h2"
             className="md:text-3l text-2xl sm:text-2xl lg:text-3xl"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Qu'est-ce que la médiation par l'animal ?") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-title") || "Qu'est-ce que la médiation par l'animal ?") : noop}
           />
           <div className="space-y-2">
             <EditableText
-              initialText="La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives."
+              initialText={getContent("hero-description-1") || "La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives."}
               contentId="hero-description-1"
               className="mb-2"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives.") : noop}
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-description-1") || "La médiation par l'animal est la mise en relation d'un bénéficiaire et d'un animal spécifiquement éduqué dans le but de créer des interactions positives.") : noop}
             />
             <EditableText
-              initialText="Ces interactions visent le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes."
+              initialText={getContent("hero-description-2") || "Ces interactions visent le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes."}
               contentId="hero-description-2"
               className="mb-2"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Ces interactions visent le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes.") : noop}
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-description-2") || "Ces interactions visent le bien-être, le maintien ou l'acquisition de compétences physiques, psychiques et/ou sociales des personnes.") : noop}
             />
             <EditableText
-              initialText="L'animal, naturel et non jugeant, favorise la création d'un lien permettant d'initier le dialogue et les interactions positives."
+              initialText={getContent("hero-description-3") || "L'animal, naturel et non jugeant, favorise la création d'un lien permettant d'initier le dialogue et les interactions positives."}
               contentId="hero-description-3"
               className="mb-2"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "L'animal, naturel et non jugeant, favorise la création d'un lien permettant d'initier le dialogue et les interactions positives.") : noop}
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-description-3") || "L'animal, naturel et non jugeant, favorise la création d'un lien permettant d'initier le dialogue et les interactions positives.") : noop}
             />
           </div>
         </div>
         <div className="flex flex-1 flex-col">
           <EditableText
-            initialText="La médiation par l'animal s'articule autour d'une relation triadique entre le bénéficiaire de la séance, l'animal et le binôme Intervenant en Médiation Animale et Référent."
+            initialText={getContent("hero-triadique-description") || "La médiation par l'animal s'articule autour d'une relation triadique entre le bénéficiaire de la séance, l'animal et le binôme Intervenant en Médiation Animale et Référent."}
             contentId="hero-triadique-description"
             variant="p"
-            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "La médiation par l'animal s'articule autour d'une relation triadique entre le bénéficiaire de la séance, l'animal et le binôme Intervenant en Médiation Animale et Référent.") : noop}
+            onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-triadique-description") || "La médiation par l'animal s'articule autour d'une relation triadique entre le bénéficiaire de la séance, l'animal et le binôme Intervenant en Médiation Animale et Référent.") : noop}
           />
           <div className="mb-9 mt-10 flex w-full items-center justify-center">
             <ul className="space-y-4 pl-5">
               <li>
                 <EditableText
-                  initialText="- L'animal médiateur :"
+                  initialText={getContent("hero-animal-mediateur-title") || "- L'animal médiateur :"}
                   contentId="hero-animal-mediateur-title"
                   variant="smallPrimary"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "- L'animal médiateur :") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-animal-mediateur-title") || "- L'animal médiateur :") : noop}
                 />
                 <br />
                 <EditableText
-                  initialText="Animal formé spécifiquement à la médiation par l'animal"
+                  initialText={getContent("hero-animal-mediateur-description") || "Animal formé spécifiquement à la médiation par l'animal"}
                   contentId="hero-animal-mediateur-description"
                   variant="small"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Animal formé spécifiquement à la médiation par l'animal") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-animal-mediateur-description") || "Animal formé spécifiquement à la médiation par l'animal") : noop}
                 />
               </li>
               <li>
                 <EditableText
-                  initialText="- Le bénéficiaire :"
+                  initialText={getContent("hero-beneficiaire-title") || "- Le bénéficiaire :"}
                   contentId="hero-beneficiaire-title"
                   variant="smallPrimary"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "- Le bénéficiaire :") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-beneficiaire-title") || "- Le bénéficiaire :") : noop}
                 />
                 <br />
                 <EditableText
-                  initialText="Personne pour qui la séance est proposée"
+                  initialText={getContent("hero-beneficiaire-description") || "Personne pour qui la séance est proposée"}
                   contentId="hero-beneficiaire-description"
                   variant="small"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Personne pour qui la séance est proposée") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-beneficiaire-description") || "Personne pour qui la séance est proposée") : noop}
                 />
               </li>
               <li>
                 <EditableText
-                  initialText="- L'IMA :"
+                  initialText={getContent("hero-ima-title") || "- L'IMA :"}
                   contentId="hero-ima-title"
                   variant="smallPrimary"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "- L'IMA :") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-ima-title") || "- L'IMA :") : noop}
                 />
                 <br />
                 <EditableText
-                  initialText="Intervenant en médiation par l'animal formé"
+                  initialText={getContent("hero-ima-description") || "Intervenant en médiation par l'animal formé"}
                   contentId="hero-ima-description"
                   variant="small"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Intervenant en médiation par l'animal formé") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-ima-description") || "Intervenant en médiation par l'animal formé") : noop}
                 />
               </li>
               <li>
                 <EditableText
-                  initialText="- Le référent :"
+                  initialText={getContent("hero-referent-title") || "- Le référent :"}
                   contentId="hero-referent-title"
                   variant="smallPrimary"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "- Le référent :") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-referent-title") || "- Le référent :") : noop}
                 />
                 <br />
                 <EditableText
-                  initialText="Personne qui connait le bénéficiaire et ses difficultés"
+                  initialText={getContent("hero-referent-description") || "Personne qui connait le bénéficiaire et ses difficultés"}
                   contentId="hero-referent-description"
                   variant="small"
-                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, "Personne qui connait le bénéficiaire et ses difficultés") : noop}
+                  onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-referent-description") || "Personne qui connait le bénéficiaire et ses difficultés") : noop}
                 />
               </li>
             </ul>
             <EditableImage
-              src="/images/triangle_MA.webp"
+              src= {getContent("hero-triangle") || "/images/triangle_MA.webp"}
               alt="Triangle de médiation animale"
               contentId="hero-triangle"
               priority={true}
               className="h-[200px] w-[350px] object-contain lg:block"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, "/images/triangle_MA.webp") : noop}
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent("hero-triangle") || "/images/triangle_MA.webp") : noop}
             />
           </div>
         </div>
@@ -166,6 +170,7 @@ export const Hero = () => {
         content={drawerType === "image" ? (drawerContent as string) : drawerContent}
         onSave={handleSave}
         type={drawerType}
+        contentId={currentContentId}
       />
     </main>
   );
