@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       create: { id, type, content },
     });
 
-    await redis.set(`content:${id}`, content, { ex: 3600 });
+    await redis.set(`content:${id}`, updatedContent.content, { ex: 3600 });
 
     return NextResponse.json(updatedContent);
   } catch (error) {
