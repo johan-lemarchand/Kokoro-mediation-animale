@@ -7,7 +7,12 @@ interface RecaptchaProps {
   onError?: (error: Error) => void;
 }
 
-const Recaptcha = forwardRef<{ reset: () => void }, RecaptchaProps>(
+interface RecaptchaRef {
+  reset: () => void;
+  execute: () => Promise<void>;
+}
+
+const Recaptcha = forwardRef<RecaptchaRef, RecaptchaProps>(
   ({ onVerify, onError }, ref) => {
     const { executeRecaptcha } = useGoogleReCaptcha();
     const hasExecuted = useRef(false);
@@ -19,8 +24,9 @@ const Recaptcha = forwardRef<{ reset: () => void }, RecaptchaProps>(
 
       try {
         hasExecuted.current = true;
-        const token = await executeRecaptcha("yourAction");
+        const token = await executeRecaptcha("contact_form_submission");
         onVerify(token);
+        return token;
       } catch (error) {
         if (onError && error instanceof Error) {
           onError(error);
@@ -34,15 +40,20 @@ const Recaptcha = forwardRef<{ reset: () => void }, RecaptchaProps>(
       reset: () => {
         hasExecuted.current = false;
       },
+      execute: async () => {
+        await handleReCaptchaVerify();
+      },
     }));
 
     useEffect(() => {
-      handleReCaptchaVerify();
+      if (executeRecaptcha) {
+        handleReCaptchaVerify();
+      }
 
       return () => {
         hasExecuted.current = false;
       };
-    }, [handleReCaptchaVerify]);
+    }, [handleReCaptchaVerify, executeRecaptcha]);
 
     return null;
   }
@@ -50,4 +61,4 @@ const Recaptcha = forwardRef<{ reset: () => void }, RecaptchaProps>(
 
 Recaptcha.displayName = "Recaptcha";
 
-export default dynamic(() => Promise.resolve(Recaptcha), { ssr: false });
+export default dynamic<RecaptchaProps>(() => Promise.resolve(Recaptcha), { ssr: false });

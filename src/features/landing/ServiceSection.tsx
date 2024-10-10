@@ -67,7 +67,6 @@ export function ServiceSection() {
                 <EditableText
                   initialText={getContent(`service-title-${item.id}`) || item.title}
                   contentId={`service-title-${item.id}`}
-                  variant="h3"
                   onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent(`service-title-${item.id}`) || item.title) : noop}
                 />
               }

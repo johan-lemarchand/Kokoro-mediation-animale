@@ -23,9 +23,7 @@ export function ContactMessageSection() {
   const plausible = usePlausible();
   const [formErrors, setFormErrors] = useState<string[]>([]);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-  const [recaptchaKey, setRecaptchaKey] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
-  const recaptchaRef = useRef<{ reset: () => void } | null>(null);
   const { toast } = useToast();
   const [isMounted, setIsMounted] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -39,37 +37,42 @@ export function ContactMessageSection() {
     setRecaptchaToken(token);
   }, []);
 
+  const handleRecaptchaError = useCallback((error: Error) => {
+    console.error("Erreur reCAPTCHA:", error);
+    toast({
+      title: "Erreur",
+      description: "Erreur lors de la vérification reCAPTCHA. Veuillez réessayer.",
+      variant: "destructive",
+      duration: 5000,
+    });
+  }, [toast]);
+
   const resetForm = () => {
-    setTimeout(() => {
-      if (formRef.current) {
-        formRef.current.reset();
-      }
-      if (recaptchaRef.current) {
-        recaptchaRef.current.reset();
-      }
-      setRecaptchaToken(null);
-      setRecaptchaKey((prevKey) => prevKey + 1);
-      setPhoneNumber("");
-    }, 100);
+    if (formRef.current) {
+      formRef.current.reset();
+    }
+    setRecaptchaToken(null);
+    setPhoneNumber("");
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsSubmitting(true);
-    const formData = new FormData(event.currentTarget);
-    const values = Object.fromEntries(formData.entries());
-    if (!recaptchaToken) {
-      console.log("No reCAPTCHA token available");
-    }
-
-    const formBody = new URLSearchParams();
-    formData.forEach((value, key) => {
-      formBody.append(key, value.toString());
-    });
-    if (recaptchaToken) {
-      formBody.append("recaptchaToken", recaptchaToken);
-    }
+    
     try {
+      if (!recaptchaToken) {
+        console.log("No reCAPTCHA token available");
+        throw new Error("reCAPTCHA verification failed");
+      }
+      const formData = new FormData(event.currentTarget);
+      const values = Object.fromEntries(formData.entries());
+
+      const formBody = new URLSearchParams();
+      formData.forEach((value, key) => {
+        formBody.append(key, value.toString());
+      });
+      formBody.append("recaptchaToken", recaptchaToken);
+
       const validatedData = ContactFormSchema.parse(values);
       const result = await submitContactForm(validatedData);
 
@@ -218,10 +221,9 @@ export function ContactMessageSection() {
           )}
 
           <div className="mt-6">
-            <DynamicRecaptcha
-              key={recaptchaKey}
+          <DynamicRecaptcha
               onVerify={handleRecaptchaVerify}
-              ref={recaptchaRef}
+              onError={handleRecaptchaError}
             />
             <LoadingButton
               loading={isSubmitting}

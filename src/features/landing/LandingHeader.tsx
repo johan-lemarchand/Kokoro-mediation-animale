@@ -141,16 +141,20 @@ export function LandingHeader({ isGalleryPage = false }) {
               Accueil
             </Link>
           )}
-          <Link
-            href="#contact"
-            className={buttonVariants({
-              className: "mt-2",
-            })}
-          >
-            <Mails size={20} className="mr-2" />
-            Contact
-          </Link>
-          <SocialLinks />
+          <div className="flex flex-col sm:flex-row sm:items-center">
+            <Link
+              href="#contact"
+              className={buttonVariants({
+                className: "mt-2",
+              })}
+            >
+              <Mails size={20} className="mr-2" />
+              Contact
+            </Link>
+            <div className="mt-2 sm:ml-4 sm:mt-0">
+              <SocialLinks />
+            </div>
+          </div>
         </motion.nav>
       </div>
     </motion.header>

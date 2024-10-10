@@ -61,7 +61,7 @@ export function ProcessSection() {
 
   return (
     <main className="relative m-auto flex w-full max-w-7xl flex-col gap-8 px-8">
-      <div className="sm:gap-13 mt-10 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-x-3">
+      <div className="sm:gap-13 grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-x-3">
         <div className="relative lg:order-1 lg:col-span-4">
           <div className="mx-auto flex aspect-square w-full max-w-[150px] items-center justify-center rounded-lg bg-gray-100 p-2 sm:max-w-[200px] sm:p-3 md:max-w-[250px] md:p-4 lg:max-w-[300px]">
             <EditableImage

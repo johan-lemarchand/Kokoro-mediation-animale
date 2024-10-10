@@ -89,8 +89,16 @@ export const Hero = () => {
             variant="p"
             onEdit={isEditable ? (contentId) => handleOpenDrawer("text", contentId, getContent("hero-triadique-description") || "La médiation par l'animal s'articule autour d'une relation triadique entre le bénéficiaire de la séance, l'animal et le binôme Intervenant en Médiation Animale et Référent.") : noop}
           />
-          <div className="mb-9 mt-10 flex w-full items-center justify-center">
-            <ul className="space-y-4 pl-5">
+          <div className="mt-4 flex w-full flex-col items-center justify-center md:flex-row">
+          <EditableImage
+              src={getContent("hero-triangle") || "/images/triangle_MA.webp"}
+              alt="Triangle de médiation animale"
+              contentId="hero-triangle"
+              priority={true}
+              className="mb-4 h-[105px] w-[150px] object-contain md:h-[140px] md:w-[200px] lg:h-[180px] lg:w-[250px]"
+              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent("hero-triangle") || "/images/triangle_MA.webp") : noop}
+            />
+            <ul className="mb-6 space-y-4 pl-5 md:mb-0 md:w-1/2">
               <li>
                 <EditableText
                   initialText={getContent("hero-animal-mediateur-title") || "- L'animal médiateur :"}
@@ -152,14 +160,7 @@ export const Hero = () => {
                 />
               </li>
             </ul>
-            <EditableImage
-              src= {getContent("hero-triangle") || "/images/triangle_MA.webp"}
-              alt="Triangle de médiation animale"
-              contentId="hero-triangle"
-              priority={true}
-              className="h-[200px] w-[350px] object-contain lg:block"
-              onEdit={isEditable ? (contentId) => handleOpenDrawer("image", contentId, getContent("hero-triangle") || "/images/triangle_MA.webp") : noop}
-            />
+          
           </div>
         </div>
       </div>

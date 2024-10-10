@@ -22,7 +22,7 @@ const links = [
 ];
 
 export default function SocialLinks({
-  className = "nav social social-white mt-4",
+  className = "nav social social-white md:mt-4 lg:mt-4",
 }: SocialLinksProps) {
   return (
     <nav className={`${className} flex gap-2`}>
