@@ -92,7 +92,7 @@ export function LandingHeader({ isGalleryPage = false }) {
               }}
               className="custom-font-text flex origin-left items-center text-xl font-semibold uppercase max-sm:hidden"
             >
-              {SiteConfig.title}
+              <h1>{SiteConfig.title}</h1>
             </motion.p>
             <span className="font-custom ml-2 hidden text-nowrap text-xl text-primary sm:block">
               <Typewriter
