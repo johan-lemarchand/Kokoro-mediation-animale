@@ -9,20 +9,13 @@ export class AuthError extends Error {
 
 export const auth = async () => {
   const session = await baseAuth();
-
-  if (session?.user) {
-    return session.user as User;
-  }
-
-  return null;
+  return session?.user as User | null;
 };
 
 export const requiredAuth = async () => {
   const user = await auth();
-
   if (!user) {
     throw new AuthError("You must be authenticated to access this resource.");
   }
-
   return user;
 };

@@ -7,7 +7,7 @@ import { env } from "../env";
 import { prisma } from "../prisma";
 import { getNextAuthConfigProviders } from "./getNextAuthConfigProviders";
 
-export const { handlers, auth: baseAuth } = NextAuth((req) => ({
+export const { handlers, auth: baseAuth } = NextAuth({
   pages: {
     signIn: "/auth/signin",
     signOut: "/auth/signout",
@@ -22,7 +22,7 @@ export const { handlers, auth: baseAuth } = NextAuth((req) => ({
   },
   secret: env.NEXTAUTH_SECRET,
   callbacks: {
-    session(params) {
+    async session(params) {
       if (params.newSession) return params.session;
 
       const typedParams = params as unknown as {
@@ -38,8 +38,6 @@ export const { handlers, auth: baseAuth } = NextAuth((req) => ({
     },
   },
   events: {
-    // 🔑 Add this line and the import to add credentials provider
-    // signIn: credentialsSignInCallback(req),
     createUser: async (message) => {
       const user = message.user;
 
@@ -48,6 +46,4 @@ export const { handlers, auth: baseAuth } = NextAuth((req) => ({
       }
     },
   },
-  // 🔑 Add this line and the import to add credentials provider
-  // jwt: credentialsOverrideJwt,
-}));
+});

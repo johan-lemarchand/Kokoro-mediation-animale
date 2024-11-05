@@ -18,6 +18,9 @@ const nextConfig = {
       },
     ],
   },
+  sassOptions: {
+    silenceDeprecations: ['legacy-js-api'],
+  }
 };
 
 const config = withPlausibleProxy()(nextConfig);
