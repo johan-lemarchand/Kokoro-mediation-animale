@@ -154,7 +154,7 @@ const services = [
     link: "#",
     icon: Icon3,
     linkType: "red",
-    title: "Séance Animation",
+    title: "Séance Bien-être",
     linkText: "Learn More",
     learnMore: `1 à 6 participants – 45min/1h<br/>
       Ces séances sont adaptées à tous les âges et peuvent être personnalisées en fonction des besoins et des objectifs du groupe.<br/>

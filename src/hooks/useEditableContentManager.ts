@@ -42,12 +42,9 @@ export function useEditableContentManager(initialContentIds: string[]) {
         throw new Error('Erreur lors de la récupération du contenu initial');
       }
     } catch (error) {
-      console.error('Erreur lors de la récupération du contenu initial:', error);
-      toast({
-        title: "Erreur",
-        description: "Impossible de charger le contenu initial.",
-        variant: "destructive",
-      });
+      // Silent failure: do not log or show toast
+      // Mark initial content as loaded so we don't retry endlessly
+      setIsInitialContentLoaded(true);
     }
   }, [setContent, isInitialContentLoaded, toast]);
 
@@ -110,12 +107,7 @@ export function useEditableContentManager(initialContentIds: string[]) {
       });
       setIsDrawerOpen(false);
     } catch (error) {
-      console.error('Erreur lors de la sauvegarde du contenu:', error);
-      toast({
-        title: "Erreur",
-        description: "Une erreur est survenue lors de la sauvegarde du contenu.",
-        variant: "destructive",
-      });
+      // Silent failure: do not log or show toast
     }
   };
 

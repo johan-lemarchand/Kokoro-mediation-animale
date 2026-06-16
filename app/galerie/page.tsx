@@ -9,8 +9,10 @@ import { Plus, X } from 'lucide-react';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
+type GalleryImage = { name: string; src: string; isLocal?: boolean };
+
 export default function GaleriePage() {
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<GalleryImage[]>([]);
   const { data: session } = useSession();
   const isEditable = !!session;
 
@@ -19,14 +21,48 @@ export default function GaleriePage() {
   }, []);
 
   async function fetchImages() {
-    const { data, error } = await supabase.storage
-      .from('kokoro')
-      .list('images/galerie');
-    
-    if (error) {
-      console.error('Erreur lors de la récupération des images:', error);
-    } else {
-      setImages(data.map(file => file.name));
+    try {
+      const { data, error } = await supabase.storage
+        .from('kokoro')
+        .list('images/galerie/');
+
+      if (error || !data) {
+       // console.error('Erreur lors de la récupération des images depuis Supabase:', error);
+        // fallback to local images served from /public/images/galerie via API route
+        const res = await fetch('/api/local-gallery');
+        if (res.ok) {
+          const json = await res.json();
+          const localImages: GalleryImage[] = (json.images || []).map((name: string) => ({
+            name,
+            src: `/images/galerie/${name}`,
+            isLocal: true,
+          }));
+          setImages(localImages);
+        } else {
+          setImages([]);
+        }
+      } else {
+        const remoteImages = data.map((file: any) => ({
+          name: file.name,
+          src: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/kokoro/images/galerie/${file.name}`,
+          isLocal: false,
+        }));
+        setImages(remoteImages);
+      }
+    } catch (err) {
+      //console.error('Erreur générale lors de la récupération des images:', err);
+      const res = await fetch('/api/local-gallery');
+      if (res.ok) {
+        const json = await res.json();
+        const localImages: GalleryImage[] = (json.images || []).map((name: string) => ({
+          name,
+          src: `/images/galerie/${name}`,
+          isLocal: true,
+        }));
+        setImages(localImages);
+      } else {
+        setImages([]);
+      }
     }
   }
 
@@ -53,10 +89,17 @@ export default function GaleriePage() {
   }
 
   async function deleteImage(imageName: string) {
+    const found = images.find((i) => i.name === imageName);
+    if (found?.isLocal) {
+      // Local fallback: just remove from state
+      setImages((prev) => prev.filter((i) => i.name !== imageName));
+      return;
+    }
+
     const { error } = await supabase.storage
       .from('kokoro')
       .remove([`images/galerie/${imageName}`]);
-    
+
     if (error) {
       console.error('Erreur lors de la suppression de l\'image:', error);
     } else {
@@ -85,38 +128,38 @@ export default function GaleriePage() {
                 Revenez bientôt, des photos seront ajoutées très prochainement !
               </p>
               {isEditable && (
-                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                  {isEditable && (
-                    <div
-                      className="relative aspect-square w-full cursor-pointer border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
-                      onClick={addImage}
-                    >
-                      <Plus
-                        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400"
-                        size={32}
-                      />
-                    </div>
-                  )}
-                  {images.map((image, index) => (
-                    <div key={index} className="relative">
-                      <Image
-                        src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/kokoro/images/galerie/${image}`}
-                        alt={`Image ${index + 1}`}
-                        width={300}
-                        height={300}
-                        className="h-auto w-full"
-                      />
+                    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                       {isEditable && (
-                        <button
-                          className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white"
-                          onClick={() => deleteImage(image)}
+                        <div
+                          className="relative aspect-square w-full cursor-pointer border-2 border-dashed border-gray-300 bg-gray-50 hover:bg-gray-100"
+                          onClick={addImage}
                         >
-                          <X size={16} />
-                        </button>
+                          <Plus
+                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-gray-400"
+                            size={32}
+                          />
+                        </div>
                       )}
+                      {images.map((image, index) => (
+                        <div key={index} className="relative">
+                          <Image
+                            src={image.src}
+                            alt={`Image ${index + 1}`}
+                            width={300}
+                            height={300}
+                            className="h-auto w-full"
+                          />
+                          {isEditable && (
+                            <button
+                              className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white"
+                              onClick={() => deleteImage(image.name)}
+                            >
+                              <X size={16} />
+                            </button>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
               )}
             </div>
           ) : (
@@ -135,7 +178,7 @@ export default function GaleriePage() {
               {images.map((image, index) => (
                 <div key={index} className="relative">
                   <Image
-                    src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/kokoro/images/galerie/${image}`}
+                    src={image.src}
                     alt={`Image ${index + 1}`}
                     width={300}
                     height={300}
@@ -144,7 +187,7 @@ export default function GaleriePage() {
                   {isEditable && (
                     <button
                       className="absolute right-2 top-2 rounded-full bg-red-500 p-1 text-white"
-                      onClick={() => deleteImage(image)}
+                      onClick={() => deleteImage(image.name)}
                     >
                       <X size={16} />
                     </button>

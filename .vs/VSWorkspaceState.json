@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\.github",
+    "\\app",
+    "\\content",
+    "\\emails",
+    "\\prisma",
+    "\\public",
+    "\\src"
+  ],
+  "PreviewInSolutionExplorer": false
+}

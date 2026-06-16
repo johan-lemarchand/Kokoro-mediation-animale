@@ -7,12 +7,12 @@ const links = [
   {
     id: 1,
     Icon: Facebook,
-    url: "https://www.linkedin.com/in/louise-burg-b873131a3/",
+    url: "https://www.facebook.com/profile.php?id=61561615330001",
   },
   {
     id: 2,
     Icon: Linkedin,
-    url: "https://www.facebook.com/profile.php?id=61561615330001",
+    url: "https://www.linkedin.com/in/louise-burg-b873131a3/",
   },
   {
     id: 3,

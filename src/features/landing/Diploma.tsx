@@ -127,4 +127,8 @@ const diplomaList = [
     no: "4",
     text: "PECCRAM (Programme d'Education à la Connaissance du Chien et au Risque d'Accident par Morsure)",
   },
+   {
+    no: "5",
+    text: "Premiers secours en santé mentale - PSSM France",
+  },
 ];
