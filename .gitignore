@@ -38,4 +38,9 @@ yarn-error.log*
 .cursorrules!
 /.env
 # Ignore the entire .idea directory
+.idea/restore-data.sql
+
+.env.neon
+.env.*
+!.env-template
 .idea/
